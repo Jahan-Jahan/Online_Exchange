@@ -16,17 +16,17 @@
 <?import javafx.scene.effect.Light?>
 <AnchorPane id="signUpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="711.0" stylesheets="@signUpStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.SignUpController">
    <children>
-      <Label layoutX="229.0" layoutY="14.0" text="Create Account" textFill="WHITE">
+      <Label fx:id="createAccountLabel" layoutX="3.0" layoutY="14.0" text="Create Account" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="35.0" />
          </font>
       </Label>
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="userIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="3.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@userIcon.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="lockIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="3.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@lockIcon.png" />
          </image>
@@ -106,7 +106,7 @@
             </Lighting>
          </effect>
       </TextField>
-      <TextField fx:id="captchaTextField" layoutX="298.0" layoutY="322.0" prefHeight="40.0" prefWidth="114.0" promptText="captcha">
+      <TextField fx:id="captchaTextField" layoutX="290.0" layoutY="322.0" prefHeight="40.0" prefWidth="114.0" promptText="captcha">
          <font>
             <Font name="Sitka Text" size="14.0" />
          </font>
@@ -121,12 +121,12 @@
             </Lighting>
          </effect>
       </TextField>
-      <Label layoutX="168.0" layoutY="327.0" text="Enter the code:" textFill="WHITE">
+      <Label fx:id="enterCaptchaLabel" layoutX="3.0" layoutY="327.0" text="Enter the code:" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="captchaLabel" alignment="CENTER" layoutX="431.0" layoutY="322.0" prefHeight="40.0" prefWidth="121.0" style="-fx-background-color: black;" textFill="RED">
+      <Label fx:id="captchaLabel" alignment="CENTER" layoutX="419.0" layoutY="322.0" prefHeight="40.0" prefWidth="121.0" style="-fx-background-color: black;" textFill="RED">
          <font>
             <Font name="Verdana" size="25.0" />
          </font></Label>
@@ -140,7 +140,7 @@
       </Button>
       <PasswordField fx:id="passwordField" layoutX="130.0" layoutY="201.0" prefHeight="40.0" prefWidth="170.0" promptText="password">
          <font>
-            <Font name="Sitka Text" size="11.0" />
+            <Font name="Sitka Text" size="9.0" />
          </font>
          <effect>
             <Lighting diffuseConstant="1.5" specularConstant="0.0" specularExponent="21.1" surfaceScale="1.04">
@@ -155,7 +155,7 @@
       </PasswordField>
       <PasswordField fx:id="repeatPasswordField" layoutX="130.0" layoutY="248.0" prefHeight="40.0" prefWidth="170.0" promptText="repeat password">
          <font>
-            <Font name="Sitka Text" size="11.0" />
+            <Font name="Sitka Text" size="9.0" />
          </font>
          <effect>
             <Lighting diffuseConstant="1.5" specularConstant="0.0" specularExponent="21.1" surfaceScale="1.04">
@@ -168,5 +168,10 @@
             </Lighting>
          </effect>
       </PasswordField>
+      <ImageView fx:id="recaptchaImageView" fitHeight="30.0" fitWidth="30.0" layoutX="541.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@recaptcha.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
