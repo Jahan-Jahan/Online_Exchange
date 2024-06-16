@@ -59,7 +59,7 @@
             <InnerShadow choke="0.12" height="11.64" radius="5.32" width="11.64" />
          </effect>
       </Button>
-      <Label fx:id="signUpLabel" layoutY="345.0" text="I don't have account" textFill="WHITE">
+      <Label fx:id="signUpLabel" layoutY="345.0" onMouseClicked="#clickOnSignUpLabel" text="I don't have account" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="14.0" />
          </font>

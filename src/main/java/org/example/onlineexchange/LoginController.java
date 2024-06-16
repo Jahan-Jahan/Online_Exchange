@@ -3,19 +3,36 @@ package org.example.onlineexchange;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.w3c.dom.events.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
+
+    private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "Your-Password";
+
+    private Parent root;
+    private Stage stage;
+    private Scene scene;
+
     String realCaptcha;
     String inputCaptcha, inputUsername, inputPassword;
 
@@ -36,7 +53,7 @@ public class LoginController implements Initializable {
         // Animation for welcome label
         TranslateTransition translateTransitionWelcome = new TranslateTransition();
 
-        translateTransitionWelcome.setDuration(Duration.millis(1300));
+        translateTransitionWelcome.setDuration(Duration.millis(1200));
 
         translateTransitionWelcome.setNode(welcomeLabel);
 
@@ -53,7 +70,7 @@ public class LoginController implements Initializable {
         // Animation for captcha label
         TranslateTransition translateTransitionCaptcha = new TranslateTransition();
 
-        translateTransitionCaptcha.setDuration(Duration.millis(1300));
+        translateTransitionCaptcha.setDuration(Duration.millis(1200));
 
         translateTransitionCaptcha.setNode(enterCaptchaLabel);
 
@@ -70,7 +87,7 @@ public class LoginController implements Initializable {
         // Animation for sign up label
         TranslateTransition translateTransitionSignUp = new TranslateTransition();
 
-        translateTransitionSignUp.setDuration(Duration.millis(1300));
+        translateTransitionSignUp.setDuration(Duration.millis(1200));
 
         translateTransitionSignUp.setNode(signUpLabel);
 
@@ -87,7 +104,7 @@ public class LoginController implements Initializable {
         // Animation for user icon
         TranslateTransition translateTransitionUserIcon = new TranslateTransition();
 
-        translateTransitionUserIcon.setDuration(Duration.millis(1300));
+        translateTransitionUserIcon.setDuration(Duration.millis(1200));
 
         translateTransitionUserIcon.setNode(userIconImageView);
 
@@ -104,7 +121,7 @@ public class LoginController implements Initializable {
         // Animation for lock icon
         TranslateTransition translateTransitionLockIcon = new TranslateTransition();
 
-        translateTransitionLockIcon.setDuration(Duration.millis(1300));
+        translateTransitionLockIcon.setDuration(Duration.millis(1200));
 
         translateTransitionLockIcon.setNode(lockIconImageView);
 
@@ -130,15 +147,29 @@ public class LoginController implements Initializable {
             signUpLabel.setStyle("-fx-text-fill: white;");
         });
 
-        recaptchaImageView.setOnMouseClicked(event -> {
+         recaptchaImageView.setOnMouseClicked(event -> {
 
             realCaptcha = generateCaptcha();
 
             captchaLabel.setText(realCaptcha);
         });
     }
+    public void clickOnSignUpLabel(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
-    public void login(ActionEvent event) {
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp.fxml")));
+
+        stage = (Stage) signUpLabel.getScene().getWindow();
+
+        scene = new Scene(root);
+
+        stage.setTitle("Sign-up");
+
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
+    public void login(ActionEvent event) throws SQLException {
 
         inputUsername = usernameTextField.getText();
 
@@ -146,14 +177,33 @@ public class LoginController implements Initializable {
 
         inputCaptcha = captchaTextField.getText();
 
+        boolean accountExist = false;
+
+        try (Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD)) {
+            if (connection != null) {
+                if (doesUserExist(connection, inputUsername)) accountExist = true;
+            } else {
+                System.out.println("Failed to make connection!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Connection failed.");
+            e.printStackTrace();
+        }
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid input!");
         alert.setHeaderText("Sorry! you can't login...");
-        alert.setContentText("Username validation: " + usernameValidation(inputUsername) +
+        alert.setContentText("You have account: " + accountExist +
+                        "\nUsername validation: " + usernameValidation(inputUsername) +
                         "\nPassword validation: " + passwordValidation(inputPassword) +
                         "\nCaptcha validation: " + captchaValidation(inputCaptcha));
 
-        if (captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
+        Alert createAccountAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        createAccountAlert.setTitle("Create Account!");
+        createAccountAlert.setHeaderText("You don't have any account...");
+        createAccountAlert.setContentText("Do you want to create an account?");
+
+        if (accountExist && captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
             System.out.println("User logged in successfully!");
             System.out.println(inputUsername);
             System.out.println(inputPassword);
@@ -161,7 +211,43 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) submitBtn.getScene().getWindow();
             stage.close();
         } else {
-            alert.show();
+
+            if (!accountExist) {
+
+                Optional<ButtonType> result = createAccountAlert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    System.out.println("Whoa! sign-up page!");
+
+                    // change the scene to the sign-up
+
+                } else {
+                    alert.show();
+                }
+
+            } else {
+                alert.show();
+            }
+        }
+    }
+
+    private static boolean doesUserExist(Connection connection, String username) {
+
+        String query = "SELECT 1 FROM users WHERE username = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next();  // If there's a result, the user exists
+            }
+        } catch (SQLException e) {
+            System.err.println("Query failed.");
+
+            e.printStackTrace();
+
+            return false;
         }
     }
 
