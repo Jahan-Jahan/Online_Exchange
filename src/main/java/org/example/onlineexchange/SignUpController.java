@@ -3,19 +3,33 @@ package org.example.onlineexchange;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignUpController implements Initializable {
 
+    private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "Your-Password";
+
+    private Parent root;
+    private Stage stage;
+    private Scene scene;
     String inputUsername, inputFirstName, inputLastName, inputPassword,
             inputRepeatedPassword, inputPhoneNumber, inputEmail, inputCaptcha;
     String realCaptcha;
@@ -28,7 +42,7 @@ public class SignUpController implements Initializable {
     @FXML
     private Button signUpBtn;
     @FXML
-    private Label captchaLabel, enterCaptchaLabel, createAccountLabel;
+    private Label captchaLabel, enterCaptchaLabel, createAccountLabel, loginLabel;
     @FXML
     private ImageView recaptchaImageView, userIconImageView, lockIconImageView;
 
@@ -38,7 +52,7 @@ public class SignUpController implements Initializable {
         // Animation for welcome label
         TranslateTransition translateTransitionWelcome = new TranslateTransition();
 
-        translateTransitionWelcome.setDuration(Duration.millis(1300));
+        translateTransitionWelcome.setDuration(Duration.millis(1200));
 
         translateTransitionWelcome.setNode(createAccountLabel);
 
@@ -55,7 +69,7 @@ public class SignUpController implements Initializable {
         // Animation for captcha label
         TranslateTransition translateTransitionCaptcha = new TranslateTransition();
 
-        translateTransitionCaptcha.setDuration(Duration.millis(1300));
+        translateTransitionCaptcha.setDuration(Duration.millis(1200));
 
         translateTransitionCaptcha.setNode(enterCaptchaLabel);
 
@@ -72,7 +86,7 @@ public class SignUpController implements Initializable {
         // Animation for user icon
         TranslateTransition translateTransitionUserIcon = new TranslateTransition();
 
-        translateTransitionUserIcon.setDuration(Duration.millis(1300));
+        translateTransitionUserIcon.setDuration(Duration.millis(1200));
 
         translateTransitionUserIcon.setNode(userIconImageView);
 
@@ -89,7 +103,7 @@ public class SignUpController implements Initializable {
         // Animation for lock icon
         TranslateTransition translateTransitionLockIcon = new TranslateTransition();
 
-        translateTransitionLockIcon.setDuration(Duration.millis(1300));
+        translateTransitionLockIcon.setDuration(Duration.millis(1200));
 
         translateTransitionLockIcon.setNode(lockIconImageView);
 
@@ -103,6 +117,23 @@ public class SignUpController implements Initializable {
 
         translateTransitionLockIcon.play();
 
+        // Animation for login label
+        TranslateTransition translateTransitionLoginLabel = new TranslateTransition();
+
+        translateTransitionLoginLabel.setDuration(Duration.millis(1200));
+
+        translateTransitionLoginLabel.setNode(loginLabel);
+
+        translateTransitionLoginLabel.setByX(0);
+
+        translateTransitionLoginLabel.setToX(277);
+
+        translateTransitionLoginLabel.setCycleCount(1);
+
+        translateTransitionLoginLabel.setAutoReverse(false);
+
+        translateTransitionLoginLabel.play();
+
         realCaptcha = generateCaptcha();
 
         captchaLabel.setText(realCaptcha);
@@ -114,9 +145,30 @@ public class SignUpController implements Initializable {
             captchaLabel.setText(realCaptcha);
         });
 
-    }
+        loginLabel.setOnMouseEntered(event -> {
+            loginLabel.setStyle("-fx-text-fill: #F08000;");
+        });
 
-    public void signUp(ActionEvent event) {
+        loginLabel.setOnMouseExited(event -> {
+            loginLabel.setStyle("-fx-text-fill: white;");
+        });
+
+    }
+    public void clickOnLoginLabel(MouseEvent mouseEvent) throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
+
+        stage = (Stage) loginLabel.getScene().getWindow();
+
+        scene = new Scene(root);
+
+        stage.setTitle("Login");
+
+        stage.setScene(scene);
+
+        stage.show();
+    }
+    public void signUp(ActionEvent event) throws SQLException {
 
         inputUsername = usernameTextField.getText();
 
@@ -150,12 +202,40 @@ public class SignUpController implements Initializable {
                 emailValidation(inputEmail) && phoneValidation(inputPhoneNumber) &&
                 captchaValidation(inputCaptcha)) {
             System.out.println("User Signed up successfully!");
-            System.out.println(inputUsername);
-            System.out.println(inputFirstName);
-            System.out.println(inputLastName);
-            System.out.println(inputPassword);
-            System.out.println(inputEmail);
-            System.out.println(inputPhoneNumber);
+
+            Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD);
+
+            Statement statement = connection.createStatement();
+
+            String query = "INSERT INTO users (username, firstName, lastName, password, email, phoneNumber)" +
+                            "VALUES (?, ?, ? ,?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, inputUsername);
+            preparedStatement.setString(2, inputFirstName);
+            preparedStatement.setString(3, inputLastName);
+            preparedStatement.setString(4, inputPassword);
+            preparedStatement.setString(5, inputEmail);
+            preparedStatement.setString(6, inputPhoneNumber);
+
+            int addedRows = preparedStatement.executeUpdate();
+
+            if (addedRows > 0) {
+                System.out.println(inputUsername);
+                System.out.println(inputFirstName);
+                System.out.println(inputLastName);
+                System.out.println(inputPassword);
+                System.out.println(inputEmail);
+                System.out.println(inputPhoneNumber);
+            } else {
+                System.out.println("User creating has failed...");
+            }
+
+            Stage stage = (Stage) signUpBtn.getScene().getWindow();
+
+            stage.close();
+
         } else {
             alert.show();
         }

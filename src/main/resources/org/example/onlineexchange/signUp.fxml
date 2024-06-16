@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.effect.Light?>
-<AnchorPane id="signUpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="711.0" stylesheets="@signUpStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.SignUpController">
+<AnchorPane id="signUpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="711.0" stylesheets="@signUpStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.SignUpController">
    <children>
       <Label fx:id="createAccountLabel" layoutX="3.0" layoutY="14.0" text="Create Account" textFill="WHITE">
          <font>
@@ -130,7 +129,7 @@
          <font>
             <Font name="Verdana" size="25.0" />
          </font></Label>
-      <Button fx:id="signUpBtn" layoutX="307.0" layoutY="393.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-radius: 10; -fx-background-color: #50C878;" text="Sign up" textFill="WHITE">
+      <Button fx:id="signUpBtn" layoutX="307.0" layoutY="420.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-radius: 10; -fx-background-color: #50C878;" text="Sign up" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="20.0" />
          </font>
@@ -173,5 +172,10 @@
             <Image url="@recaptcha.png" />
          </image>
       </ImageView>
+      <Label fx:id="loginLabel" layoutY="380.0" onMouseClicked="#clickOnLoginLabel" text="I have an account!" textFill="WHITE">
+         <font>
+            <Font name="MV Boli" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
