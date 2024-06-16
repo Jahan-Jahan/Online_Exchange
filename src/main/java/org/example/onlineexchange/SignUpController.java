@@ -1,9 +1,13 @@
 package org.example.onlineexchange;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,14 +28,91 @@ public class SignUpController implements Initializable {
     @FXML
     private Button signUpBtn;
     @FXML
-    private Label captchaLabel;
+    private Label captchaLabel, enterCaptchaLabel, createAccountLabel;
+    @FXML
+    private ImageView recaptchaImageView, userIconImageView, lockIconImageView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Animation for welcome label
+        TranslateTransition translateTransitionWelcome = new TranslateTransition();
+
+        translateTransitionWelcome.setDuration(Duration.millis(1300));
+
+        translateTransitionWelcome.setNode(createAccountLabel);
+
+        translateTransitionWelcome.setByX(0);
+
+        translateTransitionWelcome.setToX(229);
+
+        translateTransitionWelcome.setCycleCount(1);
+
+        translateTransitionWelcome.setAutoReverse(false);
+
+        translateTransitionWelcome.play();
+
+        // Animation for captcha label
+        TranslateTransition translateTransitionCaptcha = new TranslateTransition();
+
+        translateTransitionCaptcha.setDuration(Duration.millis(1300));
+
+        translateTransitionCaptcha.setNode(enterCaptchaLabel);
+
+        translateTransitionCaptcha.setByX(0);
+
+        translateTransitionCaptcha.setToX(155);
+
+        translateTransitionCaptcha.setCycleCount(1);
+
+        translateTransitionCaptcha.setAutoReverse(false);
+
+        translateTransitionCaptcha.play();
+
+        // Animation for user icon
+        TranslateTransition translateTransitionUserIcon = new TranslateTransition();
+
+        translateTransitionUserIcon.setDuration(Duration.millis(1300));
+
+        translateTransitionUserIcon.setNode(userIconImageView);
+
+        translateTransitionUserIcon.setByX(0);
+
+        translateTransitionUserIcon.setToX(76);
+
+        translateTransitionUserIcon.setCycleCount(1);
+
+        translateTransitionUserIcon.setAutoReverse(false);
+
+        translateTransitionUserIcon.play();
+
+        // Animation for lock icon
+        TranslateTransition translateTransitionLockIcon = new TranslateTransition();
+
+        translateTransitionLockIcon.setDuration(Duration.millis(1300));
+
+        translateTransitionLockIcon.setNode(lockIconImageView);
+
+        translateTransitionLockIcon.setByX(0);
+
+        translateTransitionLockIcon.setToX(76);
+
+        translateTransitionLockIcon.setCycleCount(1);
+
+        translateTransitionLockIcon.setAutoReverse(false);
+
+        translateTransitionLockIcon.play();
+
         realCaptcha = generateCaptcha();
 
         captchaLabel.setText(realCaptcha);
+
+        recaptchaImageView.setOnMouseClicked(event -> {
+
+            realCaptcha = generateCaptcha();
+
+            captchaLabel.setText(realCaptcha);
+        });
 
     }
 
