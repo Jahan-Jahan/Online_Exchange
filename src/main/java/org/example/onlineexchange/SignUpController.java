@@ -25,7 +25,7 @@ public class SignUpController implements Initializable {
 
     private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Your_Password";
 
     private Parent root;
     private Stage stage;
@@ -56,9 +56,9 @@ public class SignUpController implements Initializable {
 
         translateTransitionWelcome.setNode(createAccountLabel);
 
-        translateTransitionWelcome.setByX(0);
+        translateTransitionWelcome.setByY(0);
 
-        translateTransitionWelcome.setToX(229);
+        translateTransitionWelcome.setToY(60);
 
         translateTransitionWelcome.setCycleCount(1);
 
@@ -156,7 +156,7 @@ public class SignUpController implements Initializable {
     }
     public void clickOnLoginLabel(MouseEvent mouseEvent) throws IOException {
 
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login/login.fxml")));
 
         stage = (Stage) loginLabel.getScene().getWindow();
 
@@ -201,7 +201,7 @@ public class SignUpController implements Initializable {
                 nameValidation(inputLastName) && passwordValidation(inputPassword, inputRepeatedPassword) &&
                 emailValidation(inputEmail) && phoneValidation(inputPhoneNumber) &&
                 captchaValidation(inputCaptcha)) {
-            System.out.println("User Signed up successfully!");
+//            System.out.println("User Signed up successfully!");
 
             Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD);
 
