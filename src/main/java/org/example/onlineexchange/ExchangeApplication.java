@@ -12,17 +12,24 @@ import java.io.InputStream;
 public class ExchangeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ExchangeApplication.class.getResource("login.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(ExchangeApplication.class.getResource("login/login.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load());
 
         InputStream iconStream = getClass().getResourceAsStream("cryptoIcon.png");
+
         if (iconStream != null) {
+
             Image icon = new Image(iconStream);
+
             stage.getIcons().add(icon);
         }
 
         stage.setTitle("Login");
+
         stage.setScene(scene);
+
         stage.show();
     }
 
