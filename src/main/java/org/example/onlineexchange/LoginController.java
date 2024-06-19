@@ -27,7 +27,7 @@ public class LoginController implements Initializable {
 
     private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Your_Password";
 
     private Parent root;
     private Stage stage;
@@ -43,7 +43,7 @@ public class LoginController implements Initializable {
     @FXML
     private Button submitBtn;
     @FXML
-    private Label captchaLabel, enterCaptchaLabel, signUpLabel, welcomeLabel;
+    private Label captchaLabel, enterCaptchaLabel, signUpLabel, welcomeLabel, forgotPasswordLabel;
     @FXML
     private ImageView recaptchaImageView, userIconImageView, lockIconImageView;
 
@@ -57,9 +57,9 @@ public class LoginController implements Initializable {
 
         translateTransitionWelcome.setNode(welcomeLabel);
 
-        translateTransitionWelcome.setByX(0);
+        translateTransitionWelcome.setByY(0);
 
-        translateTransitionWelcome.setToX(239);
+        translateTransitionWelcome.setToY(44);
 
         translateTransitionWelcome.setCycleCount(1);
 
@@ -93,7 +93,7 @@ public class LoginController implements Initializable {
 
         translateTransitionSignUp.setByX(0);
 
-        translateTransitionSignUp.setToX(232);
+        translateTransitionSignUp.setToX(125);
 
         translateTransitionSignUp.setCycleCount(1);
 
@@ -135,6 +135,23 @@ public class LoginController implements Initializable {
 
         translateTransitionLockIcon.play();
 
+        // Animation for forgot label
+        TranslateTransition translateTransitionForgotLabel = new TranslateTransition();
+
+        translateTransitionForgotLabel.setDuration(Duration.millis(1200));
+
+        translateTransitionForgotLabel.setNode(forgotPasswordLabel);
+
+        translateTransitionForgotLabel.setByX(486);
+
+        translateTransitionForgotLabel.setToX(-147); // 339
+
+        translateTransitionForgotLabel.setCycleCount(1);
+
+        translateTransitionForgotLabel.setAutoReverse(false);
+
+        translateTransitionForgotLabel.play();
+
         realCaptcha = generateCaptcha();
 
         captchaLabel.setText(realCaptcha);
@@ -147,6 +164,14 @@ public class LoginController implements Initializable {
             signUpLabel.setStyle("-fx-text-fill: white;");
         });
 
+        forgotPasswordLabel.setOnMouseEntered(event -> {
+            forgotPasswordLabel.setStyle("-fx-text-fill: #F08000;");
+        });
+
+        forgotPasswordLabel.setOnMouseExited(event -> {
+            forgotPasswordLabel.setStyle("-fx-text-fill: white;");
+        });
+
          recaptchaImageView.setOnMouseClicked(event -> {
 
             realCaptcha = generateCaptcha();
@@ -156,13 +181,28 @@ public class LoginController implements Initializable {
     }
     public void clickOnSignUpLabel(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp/signUp.fxml")));
 
         stage = (Stage) signUpLabel.getScene().getWindow();
 
         scene = new Scene(root);
 
         stage.setTitle("Sign-up");
+
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
+    public void clickOnForgotLabel(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("forgotPassword/forgotPassword.fxml")));
+
+        stage = (Stage) signUpLabel.getScene().getWindow();
+
+        scene = new Scene(root);
+
+        stage.setTitle("Forgot Password");
 
         stage.setScene(scene);
 
@@ -199,16 +239,24 @@ public class LoginController implements Initializable {
                         "\nCaptcha validation: " + captchaValidation(inputCaptcha));
 
         Alert createAccountAlert = new Alert(Alert.AlertType.CONFIRMATION);
+
         createAccountAlert.setTitle("Create Account!");
+
         createAccountAlert.setHeaderText("You don't have any account...");
+
         createAccountAlert.setContentText("Do you want to create an account?");
 
         if (accountExist && captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
             System.out.println("User logged in successfully!");
-            System.out.println(inputUsername);
-            System.out.println(inputPassword);
+
+
+
+            // go to the main page!
+
+
 
             Stage stage = (Stage) submitBtn.getScene().getWindow();
+
             stage.close();
         } else {
 
