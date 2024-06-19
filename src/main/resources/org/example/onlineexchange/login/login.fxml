@@ -13,20 +13,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.effect.Light?>
 <AnchorPane id="loginPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="600.0" stylesheets="@loginStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.LoginController">
    <children>
       <ImageView fx:id="userIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="7.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@userIcon.png" />
+            <Image url="@../userIcon.png" />
          </image>
       </ImageView>
       <ImageView fx:id="lockIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="7.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@lockIcon.png" />
+            <Image url="@../lockIcon.png" />
          </image>
       </ImageView>
-      <Label fx:id="welcomeLabel" layoutY="14.0" prefHeight="63.0" prefWidth="121.0" text="Login" textFill="WHITE">
+      <Label fx:id="welcomeLabel" layoutX="229.0" layoutY="-30.0" prefHeight="63.0" prefWidth="121.0" text="Login" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="50.0" />
          </font>
@@ -59,7 +58,7 @@
             <InnerShadow choke="0.12" height="11.64" radius="5.32" width="11.64" />
          </effect>
       </Button>
-      <Label fx:id="signUpLabel" layoutY="345.0" onMouseClicked="#clickOnSignUpLabel" text="I don't have account" textFill="WHITE">
+      <Label fx:id="signUpLabel" layoutY="347.0" onMouseClicked="#clickOnSignUpLabel" text="I don't have account" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="14.0" />
          </font>
@@ -101,8 +100,13 @@
       </TextField>
       <ImageView fx:id="recaptchaImageView" fitHeight="30.0" fitWidth="30.0" layoutX="486.0" layoutY="282.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@recaptcha.png" />
+            <Image url="@../recaptcha.png" />
          </image>
       </ImageView>
+      <Label fx:id="forgotPasswordLabel" layoutX="486.0" layoutY="347.0" onMouseClicked="#clickOnForgotLabel" text="Forgot password" textFill="WHITE">
+         <font>
+            <Font name="MV Boli" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

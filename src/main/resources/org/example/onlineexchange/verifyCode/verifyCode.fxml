@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="verifyCodePane" prefHeight="400.0" prefWidth="600.0" stylesheets="@verifyStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.VerifyCode">
+   <children>
+      <Button fx:id="submitBtn" layoutX="252.0" layoutY="293.0" mnemonicParsing="false" onAction="#submitCode" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Submit" textFill="WHITE">
+         <font>
+            <Font name="MV Boli" size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="textLabel" alignment="CENTER" layoutX="90.0" prefHeight="59.0" prefWidth="417.0" text="Enter the code that we sent to your email:" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Sitka Text" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="codeTextField" layoutX="196.0" layoutY="170.0" prefHeight="59.0" prefWidth="206.0" promptText="code">
+         <effect>
+            <Lighting diffuseConstant="1.5" specularConstant="0.0" specularExponent="21.1" surfaceScale="1.04">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+         <font>
+            <Font name="Verdana" size="25.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

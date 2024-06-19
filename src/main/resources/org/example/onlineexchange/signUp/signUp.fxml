@@ -15,19 +15,19 @@
 
 <AnchorPane id="signUpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="711.0" stylesheets="@signUpStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.SignUpController">
    <children>
-      <Label fx:id="createAccountLabel" layoutX="3.0" layoutY="14.0" text="Create Account" textFill="WHITE">
+      <Label fx:id="createAccountLabel" layoutX="229.0" layoutY="-31.0" text="Create Account" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="35.0" />
          </font>
       </Label>
       <ImageView fx:id="userIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="3.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@userIcon.png" />
+            <Image url="@../userIcon.png" />
          </image>
       </ImageView>
       <ImageView fx:id="lockIconImageView" fitHeight="40.0" fitWidth="40.0" layoutX="3.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@lockIcon.png" />
+            <Image url="@../lockIcon.png" />
          </image>
       </ImageView>
       <TextField fx:id="usernameTextField" layoutX="130.0" layoutY="133.0" prefHeight="40.0" prefWidth="170.0" promptText="username">
@@ -169,7 +169,7 @@
       </PasswordField>
       <ImageView fx:id="recaptchaImageView" fitHeight="30.0" fitWidth="30.0" layoutX="541.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@recaptcha.png" />
+            <Image url="@../recaptcha.png" />
          </image>
       </ImageView>
       <Label fx:id="loginLabel" layoutY="380.0" onMouseClicked="#clickOnLoginLabel" text="I have an account!" textFill="WHITE">

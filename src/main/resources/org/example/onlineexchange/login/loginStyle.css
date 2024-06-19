@@ -1,5 +1,5 @@
-#signUpPane {
-    -fx-background-image: url("loginBackground.png");
+#loginPane {
+    -fx-background-image: url("../loginBackground.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
