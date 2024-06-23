@@ -27,14 +27,14 @@ public class LoginController implements Initializable {
 
     private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your_Password";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
     private Scene scene;
 
     String realCaptcha;
-    String inputCaptcha, inputUsername, inputPassword;
+    static String inputCaptcha, inputUsername, inputPassword;
 
     @FXML
     private TextField usernameTextField, captchaTextField;
@@ -209,7 +209,7 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
-    public void login(ActionEvent event) throws SQLException {
+    public void login(ActionEvent event) throws SQLException, IOException {
 
         inputUsername = usernameTextField.getText();
 
@@ -249,15 +249,20 @@ public class LoginController implements Initializable {
         if (accountExist && captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
             System.out.println("User logged in successfully!");
 
-
-
             // go to the main page!
 
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
 
+            scene = new Scene(root);
 
-            Stage stage = (Stage) submitBtn.getScene().getWindow();
+            stage = (Stage) submitBtn.getScene().getWindow();
 
-            stage.close();
+            stage.setScene(scene);
+
+            stage.setTitle("Main");
+
+            stage.show();
+
         } else {
 
             if (!accountExist) {
@@ -267,7 +272,9 @@ public class LoginController implements Initializable {
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     System.out.println("Whoa! sign-up page!");
 
+
                     // change the scene to the sign-up
+
 
                 } else {
                     alert.show();
@@ -319,22 +326,22 @@ public class LoginController implements Initializable {
 
         return captcha.toString();
     }
-
     public boolean captchaValidation(String unvalidatedCaptcha) {
         String allLowerRealCaptcha = realCaptcha.toLowerCase();
         String allLowerUnvalidatedCaptcha = unvalidatedCaptcha.toLowerCase();
         return allLowerRealCaptcha.equals(allLowerUnvalidatedCaptcha);
     }
-
     public boolean usernameValidation(String unvalidatedUsername) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9_@#$]{3,20}");
         Matcher matcher = pattern.matcher(unvalidatedUsername);
         return matcher.find();
     }
-
     public boolean passwordValidation(String unvalidatedPassword) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9!@#$%^&*_-]{8,20}");
         Matcher matcher = pattern.matcher(unvalidatedPassword);
         return matcher.find();
+    }
+    public static String getUsername() {
+        return inputUsername;
     }
 }

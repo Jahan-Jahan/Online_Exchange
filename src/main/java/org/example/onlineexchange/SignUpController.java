@@ -25,7 +25,7 @@ public class SignUpController implements Initializable {
 
     private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your_Password";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
@@ -168,7 +168,7 @@ public class SignUpController implements Initializable {
 
         stage.show();
     }
-    public void signUp(ActionEvent event) throws SQLException {
+    public void signUp(ActionEvent event) throws SQLException, IOException {
 
         inputUsername = usernameTextField.getText();
 
@@ -232,9 +232,17 @@ public class SignUpController implements Initializable {
                 System.out.println("User creating has failed...");
             }
 
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
+
             Stage stage = (Stage) signUpBtn.getScene().getWindow();
 
-            stage.close();
+            scene = new Scene(root);
+
+            stage.setTitle("Main");
+
+            stage.setScene(scene);
+
+            stage.show();
 
         } else {
             alert.show();
