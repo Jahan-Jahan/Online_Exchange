@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="commentPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@commentStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.CommentController">
+   <children>
+      <TextArea fx:id="commentTextArea" layoutX="75.0" layoutY="75.0" prefHeight="250.0" prefWidth="450.0" promptText="your comment..." wrapText="true">
+         <font>
+            <Font name="MV Boli" size="14.0" />
+         </font>
+      </TextArea>
+      <Button fx:id="backBtn" alignment="CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToHome" prefHeight="38.0" prefWidth="60.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.38" specularConstant="0.83" specularExponent="23.3" surfaceScale="2.05">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
+      <Button fx:id="submitBtn" alignment="CENTER" layoutX="264.0" layoutY="337.0" mnemonicParsing="false" onAction="#getComment" prefHeight="38.0" prefWidth="70.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Submit" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.38" specularConstant="0.83" specularExponent="23.3" surfaceScale="2.05">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
