@@ -26,7 +26,7 @@ public class ChangePasswordController implements Initializable {
 
     private static final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Your_Password";
+    private static final String PASSWORD = "Your-Password";
     private Parent root;
     private Stage stage;
     private Scene scene;
@@ -87,6 +87,7 @@ public class ChangePasswordController implements Initializable {
             stage.setScene(scene);
 
             stage.show();
+
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
 

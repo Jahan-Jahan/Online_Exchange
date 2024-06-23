@@ -12,10 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
+//import javax.mail.*;
+//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.MimeMessage;
+//import java.util.Properties;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ForgotPasswordController implements Initializable {
+public class orgotPasswordController implements Initializable {
 
     private static String generatedCode;
     private static String inputEmail;
@@ -96,6 +96,7 @@ public class ForgotPasswordController implements Initializable {
 //                    });
 //
 //            try {
+
 //
 //                Message message = new MimeMessage(session);
 //                message.setFrom(new InternetAddress("mahdyalbajitest@gmail.com"));
