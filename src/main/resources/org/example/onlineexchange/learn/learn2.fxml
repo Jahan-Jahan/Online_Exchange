@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="learnPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@learnStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.LearnController2">
+   <children>
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLearn" prefHeight="39.0" prefWidth="62.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="15.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.51" specularConstant="0.81" specularExponent="30.18" surfaceScale="2.6">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
+      <Label fx:id="label" alignment="TOP_LEFT" layoutX="118.0" layoutY="50.0" prefHeight="300.0" prefWidth="400.0" text="Cryptocurrency is a digital or virtual currency that uses cryptography for security. Unlike traditional currencies issued by governments, cryptocurrencies operate on decentralized networks based on blockchain technology. The most well-known cryptocurrency is Bitcoin, but there are thousands of others, such as Ethereum, Ripple, and Litecoin." textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="MV Boli" size="19.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
