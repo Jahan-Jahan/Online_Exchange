@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class orgotPasswordController implements Initializable {
+public class ForgotPasswordController implements Initializable {
 
     private static String generatedCode;
     private static String inputEmail;
