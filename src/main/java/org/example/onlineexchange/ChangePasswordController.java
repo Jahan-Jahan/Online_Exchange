@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 
 public class ChangePasswordController implements Initializable {
 
-    private static final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
+    private static final String URL = "jdbc:mysql://localhost:3306/crypto";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Your-PasswordC";
+    private static final String PASSWORD = "Your-Password";
     private Parent root;
     private Stage stage;
     private Scene scene;
@@ -72,7 +72,7 @@ public class ChangePasswordController implements Initializable {
 
         if (passwordValidation(inputPassword, inputRepeatPassword)) {
 
-            Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD);
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
             changeUserPassword(connection, email, inputPassword);
 
@@ -115,7 +115,7 @@ public class ChangePasswordController implements Initializable {
         String updateQuery = "UPDATE users SET password = ? WHERE email = ?";
 
         // Establish connection
-        try (Connection conn = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD);
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 
             // Set parameters
