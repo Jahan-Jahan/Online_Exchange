@@ -126,19 +126,18 @@ public class MainPageController implements Initializable {
 
         // Go to the profile page
 
-//        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("profilePage/profilePage.fxml")));
-//
-//        stage = (Stage) backBtn.getScene().getWindow();
-//
-//        scene = new Scene(root);
-//
-//        stage.setTitle("profile");
-//
-//        stage.setScene(scene);
-//
-//        stage.show();
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("profile/profile.fxml")));
 
-        System.out.println("Woah! the profile page!");
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        scene = new Scene(root);
+
+        stage.setTitle("profile");
+
+        stage.setScene(scene);
+
+        stage.show();
+
     }
     public void clickOnSoundIcon() {
 
@@ -154,12 +153,7 @@ public class MainPageController implements Initializable {
                 soundImageView.setImage(icon);
             }
 
-
-            // stop the music player
-
             musicController.stopMusic();
-
-
 
         } else {
             sound = true;
@@ -173,13 +167,7 @@ public class MainPageController implements Initializable {
                 soundImageView.setImage(icon);
             }
 
-
-
-            // Run the music player!
-
             musicController.playMusic();
-
-
 
         }
 
