@@ -12,7 +12,7 @@ public class MusicController {
     private MediaPlayer mediaPlayer;
 
     public MusicController() {
-        String musicFile = "music-to-play/test.mp3";
+        String musicFile = "music-to-play/atom.mp3";
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(musicFile)).toExternalForm());
         mediaPlayer = new MediaPlayer(sound);
     }
