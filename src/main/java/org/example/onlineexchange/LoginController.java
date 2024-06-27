@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
 
-    private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
+    private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
     private final String PASSWORD = "Your-Password";
 
@@ -219,7 +219,7 @@ public class LoginController implements Initializable {
 
         boolean accountExist = false;
 
-        try (Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD)) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             if (connection != null) {
                 if (doesUserExist(connection, inputUsername)) accountExist = true;
             } else {
@@ -247,7 +247,6 @@ public class LoginController implements Initializable {
         createAccountAlert.setContentText("Do you want to create an account?");
 
         if (accountExist && captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
-            System.out.println("User logged in successfully!");
 
             // go to the main page!
 
@@ -270,11 +269,19 @@ public class LoginController implements Initializable {
                 Optional<ButtonType> result = createAccountAlert.showAndWait();
 
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    System.out.println("Whoa! sign-up page!");
-
 
                     // change the scene to the sign-up
+                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp/signUp.fxml")));
 
+                    stage = (Stage) submitBtn.getScene().getWindow();
+
+                    scene = new Scene(root);
+
+                    stage.setTitle("sign-up");
+
+                    stage.setScene(scene);
+
+                    stage.show();
 
                 } else {
                     alert.show();
@@ -285,7 +292,6 @@ public class LoginController implements Initializable {
             }
         }
     }
-
     private static boolean doesUserExist(Connection connection, String username) {
 
         String query = "SELECT 1 FROM users WHERE username = ?";
@@ -305,7 +311,31 @@ public class LoginController implements Initializable {
             return false;
         }
     }
+    private boolean isCorrectPassword() {
 
+        String query = "SELECT password FROM users WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, inputUsername);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            String correctPassword = "";
+
+            while (resultSet.next()) {
+                correctPassword = resultSet.getString("password");
+            }
+
+            return correctPassword.equals(inputPassword);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
     public String generateCaptcha() {
         StringBuilder code = new StringBuilder();
 
@@ -339,9 +369,12 @@ public class LoginController implements Initializable {
     public boolean passwordValidation(String unvalidatedPassword) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9!@#$%^&*_-]{8,20}");
         Matcher matcher = pattern.matcher(unvalidatedPassword);
-        return matcher.find();
+        return matcher.find() && isCorrectPassword();
     }
     public static String getUsername() {
         return inputUsername;
+    }
+    public static void setUsername(String newUsername) {
+        inputUsername = newUsername;
     }
 }
