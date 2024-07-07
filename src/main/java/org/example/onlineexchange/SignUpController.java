@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class SignUpController implements Initializable {
 
-    private final String databaseUrl = "jdbc:mysql://localhost:3306/crypto";
+    private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
     private final String PASSWORD = "Your-Password";
 
@@ -203,12 +203,12 @@ public class SignUpController implements Initializable {
                 captchaValidation(inputCaptcha)) {
 //            System.out.println("User Signed up successfully!");
 
-            Connection connection = DriverManager.getConnection(databaseUrl, USERNAME, PASSWORD);
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
             Statement statement = connection.createStatement();
 
-            String query = "INSERT INTO users (username, firstName, lastName, password, email, phoneNumber)" +
-                            "VALUES (?, ?, ? ,?, ?, ?)";
+            String query = "INSERT INTO users (username, firstName, lastName, password, email, phoneNumber, profile)" +
+                            "VALUES (?, ?, ? ,?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -218,6 +218,7 @@ public class SignUpController implements Initializable {
             preparedStatement.setString(4, inputPassword);
             preparedStatement.setString(5, inputEmail);
             preparedStatement.setString(6, inputPhoneNumber);
+            preparedStatement.setString(7, "C:/Users/pc/Desktop/onlineExchange/src/main/resources/org/example/onlineexchange/userProfile.png");
 
             int addedRows = preparedStatement.executeUpdate();
 

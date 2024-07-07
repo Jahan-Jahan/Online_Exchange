@@ -9,12 +9,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -35,6 +37,7 @@ public class LoginController implements Initializable {
 
     String realCaptcha;
     static String inputCaptcha, inputUsername, inputPassword;
+    static Image profileImage;
 
     @FXML
     private TextField usernameTextField, captchaTextField;
@@ -49,6 +52,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        initializeProfile();
 
         // Animation for welcome label
         TranslateTransition translateTransitionWelcome = new TranslateTransition();
@@ -179,6 +184,35 @@ public class LoginController implements Initializable {
             captchaLabel.setText(realCaptcha);
         });
     }
+
+    public void initializeProfile() {
+
+        String query = "SELECT profile FROM users WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, inputUsername);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    InputStream imageStream = getClass().getResourceAsStream(rs.getString("profile"));
+
+                    if (imageStream != null) {
+                        profileImage = new Image(imageStream);
+                    }
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void clickOnSignUpLabel(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp/signUp.fxml")));

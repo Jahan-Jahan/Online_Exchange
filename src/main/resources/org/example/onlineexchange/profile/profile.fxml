@@ -12,37 +12,37 @@
 
 <AnchorPane id="profilePane" prefHeight="400.0" prefWidth="600.0" stylesheets="@profileStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.ProfileController">
    <children>
-      <Label fx:id="usernameLabel" alignment="CENTER" layoutX="100.0" layoutY="81.0" text="Username" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="usernameLabel" alignment="CENTER" layoutY="79.0" text="Username" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="emailLabel" alignment="CENTER" layoutX="100.0" layoutY="150.0" text="Email" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="emailLabel" alignment="CENTER" layoutY="149.0" text="Email" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="phoneLabel" alignment="CENTER" layoutX="100.0" layoutY="216.0" text="Phone" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="phoneLabel" alignment="CENTER" layoutY="219.0" text="Phone" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="editLabel1" alignment="CENTER" layoutX="469.0" layoutY="81.0" onMouseClicked="#clickOnEdit1" text="Edit" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="editLabel1" alignment="CENTER" layoutX="468.0" layoutY="81.0" onMouseClicked="#clickOnEdit1" text="Edit" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="editLabel2" alignment="CENTER" layoutX="469.0" layoutY="151.0" onMouseClicked="#clickOnEdit2" text="Edit" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="editLabel2" alignment="CENTER" layoutX="468.0" layoutY="151.0" onMouseClicked="#clickOnEdit2" text="Edit" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="editLabel3" alignment="CENTER" layoutX="469.0" layoutY="216.0" onMouseClicked="#clickOnEdit3" text="Edit" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="editLabel3" alignment="CENTER" layoutX="468.0" layoutY="221.0" onMouseClicked="#clickOnEdit3" text="Edit" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="15.0" />
          </font>
       </Label>
-      <ImageView fitHeight="54.0" fitWidth="72.0" layoutX="532.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="profileImageView" fitHeight="54.0" fitWidth="72.0" layoutX="532.0" layoutY="14.0" onMouseClicked="#clickOnProfile" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../userProfile.png" />
          </image>
@@ -62,5 +62,30 @@
                </Lighting>
            </effect>
        </Button>
+      <Label fx:id="assetsLabel" layoutY="289.0" text="Your Assets: 0$" textFill="WHITE">
+         <font>
+            <Font name="Sitka Text" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="exchangeLabel" layoutX="452.0" layoutY="291.0" onMouseClicked="#goToExchangePage" text="Exchange" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="addMoneyBtn" layoutX="250.0" layoutY="346.0" mnemonicParsing="false" onAction="#addMoney" prefHeight="40.0" prefWidth="99.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Add money" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.5">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="230.0" />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
    </children>
 </AnchorPane>
