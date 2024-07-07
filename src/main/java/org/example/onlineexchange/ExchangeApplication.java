@@ -13,7 +13,7 @@ public class ExchangeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(ExchangeApplication.class.getResource("login/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ExchangeApplication.class.getResource("signUp/signUP.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
 

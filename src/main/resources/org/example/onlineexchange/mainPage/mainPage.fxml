@@ -11,31 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.effect.Light?>
 <BorderPane id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="745.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.MainPageController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="DOGEIcon" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../doge.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="DASHIcon" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="321.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../dash.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="LTCIcon" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../litecoin.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="BTCIcon" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../bitcoin.png" />
-               </image>
-            </ImageView>
             <Label layoutX="433.4" layoutY="155.0" text="Min-Price" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="14.0" />
@@ -69,17 +48,6 @@
                      </light>
                   </Lighting>
                </effect></Label>
-            <Label layoutX="85.0" layoutY="155.0" text="Coins" textFill="WHITE">
-               <font>
-                  <Font name="Verdana" size="14.0" />
-               </font>
-               <effect>
-                  <Lighting bumpInput="$null" diffuseConstant="1.81" specularConstant="2.0" specularExponent="0.0" surfaceScale="0.0">
-                     <light>
-                        <Light.Distant />
-                     </light>
-                  </Lighting>
-               </effect></Label>
             <Label layoutX="573.8" layoutY="155.0" text="Max-Price" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="14.0" />
@@ -91,10 +59,10 @@
                      </light>
                   </Lighting>
                </effect></Label>
-            <Label layoutX="107.0" layoutY="212.0" text="(BTC)" textFill="WHITE" />
-            <Label layoutX="107.0" layoutY="272.0" text="(DOGE)" textFill="WHITE" />
-            <Label layoutX="107.0" layoutY="332.0" text="(DASH)" textFill="WHITE" />
-            <Label layoutX="107.0" layoutY="392.0" text="(LTC)" textFill="WHITE" />
+            <Label layoutX="113.0" layoutY="262.0" text="(EUR)" textFill="WHITE" />
+            <Label layoutX="106.0" layoutY="313.0" text="(Toman)" textFill="WHITE" />
+            <Label layoutX="113.0" layoutY="363.0" text="(YEN)" textFill="WHITE" />
+            <Label layoutX="113.0" layoutY="413.0" text="(GBP)" textFill="WHITE" />
             <Label alignment="CENTER" layoutX="88.0" layoutY="14.0" prefHeight="111.0" prefWidth="569.0" text="This is the news board!" textFill="WHITE">
                <font>
                   <Font name="Sitka Text" size="50.0" />
@@ -105,6 +73,132 @@
                   <Image url="@../soundless.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="euroIcon" fitHeight="40.0" fitWidth="40.0" layoutX="58.0" layoutY="251.0" onMouseClicked="#clickOnEuro" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../euro_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="poundIcon" fitHeight="35.0" fitWidth="35.0" layoutX="60.0" layoutY="404.0" onMouseClicked="#clickOnPound" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../gbp_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="tomanIcon" fitHeight="35.0" fitWidth="35.0" layoutX="60.0" layoutY="304.0" onMouseClicked="#clickOnToman" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../toman_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="yenIcon" fitHeight="35.0" fitWidth="35.0" layoutX="60.0" layoutY="354.0" onMouseClicked="#clickOnYen" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../yen_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="usdIcon" fitHeight="40.0" fitWidth="40.0" layoutX="58.0" layoutY="198.0" onMouseClicked="#clickOnDollar" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../dollar_icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="113.0" layoutY="209.0" text="(USD)" textFill="WHITE" />
+            <Label fx:id="priceLabel1" alignment="CENTER" layoutX="162.0" layoutY="210.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel2" alignment="CENTER" layoutX="162.0" layoutY="263.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel3" alignment="CENTER" layoutX="162.0" layoutY="314.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel4" alignment="CENTER" layoutX="162.0" layoutY="364.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel5" alignment="CENTER" layoutX="162.0" layoutY="413.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changeLabel1" alignment="CENTER" layoutX="281.0" layoutY="210.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changeLabel2" alignment="CENTER" layoutX="281.0" layoutY="263.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changeLabel3" alignment="CENTER" layoutX="281.0" layoutY="314.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changeLabel4" alignment="CENTER" layoutX="281.0" layoutY="363.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changeLabel5" alignment="CENTER" layoutX="281.0" layoutY="413.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxLabel1" alignment="CENTER" layoutX="558.0" layoutY="210.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxLabel2" alignment="CENTER" layoutX="558.0" layoutY="265.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxLabel3" alignment="CENTER" layoutX="558.0" layoutY="313.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxLabel4" alignment="CENTER" layoutX="558.0" layoutY="363.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxLabel5" alignment="CENTER" layoutX="558.0" layoutY="413.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="minLabel1" alignment="CENTER" layoutX="416.0" layoutY="211.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="minLabel2" alignment="CENTER" layoutX="416.0" layoutY="264.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="minLabel3" alignment="CENTER" layoutX="416.0" layoutY="314.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="minLabel4" alignment="CENTER" layoutX="416.0" layoutY="364.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="minLabel5" alignment="CENTER" layoutX="416.0" layoutY="412.0" prefWidth="100.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="15.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>
