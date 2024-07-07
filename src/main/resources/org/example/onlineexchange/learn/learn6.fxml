@@ -10,24 +10,24 @@
 
 <AnchorPane id="learnPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@learnStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.LearnController6">
    <children>
-      <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLearn" prefHeight="39.0" prefWidth="62.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLearn" prefHeight="40.0" prefWidth="66.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
          <font>
-            <Font name="Verdana" size="15.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
          <effect>
-            <Lighting diffuseConstant="1.51" specularConstant="0.81" specularExponent="30.18" surfaceScale="2.6">
+            <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
                <bumpInput>
                   <Shadow />
                </bumpInput>
                <light>
-                  <Light.Distant />
+                  <Light.Distant azimuth="270.0" />
                </light>
             </Lighting>
          </effect>
       </Button>
-      <Label fx:id="label" alignment="TOP_LEFT" layoutX="100.0" layoutY="50.0" prefHeight="300.0" prefWidth="400.0" textFill="WHITE" wrapText="true">
+      <Label fx:id="label" alignment="TOP_LEFT" layoutX="100.0" layoutY="32.0" prefHeight="344.0" prefWidth="419.0" textFill="WHITE" wrapText="true">
          <font>
-            <Font name="MV Boli" size="16.0" />
+            <Font name="MV Boli" size="13.0" />
          </font>
       </Label>
    </children>
