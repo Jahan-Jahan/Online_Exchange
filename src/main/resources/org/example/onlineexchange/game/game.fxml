@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="gamePane" prefHeight="400.0" prefWidth="600.0" stylesheets="@gameStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.GameController">
+   <children>
+       <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="66.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+           <font>
+               <Font name="Verdana" size="14.0" />
+           </font>
+           <effect>
+               <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+                   <bumpInput>
+                       <Shadow />
+                   </bumpInput>
+                   <light>
+                       <Light.Distant azimuth="270.0" />
+                   </light>
+               </Lighting>
+           </effect>
+       </Button>
+      <ImageView fx:id="dogImageView" fitHeight="230.0" fitWidth="240.0" layoutX="185.0" layoutY="85.0" onMouseClicked="#clickOnDog" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../dog.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="scoreLabel" alignment="CENTER" layoutX="184.0" layoutY="34.0" prefHeight="18.0" prefWidth="230.0" text="Label" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="congLabel1" alignment="CENTER" layoutX="24.0" layoutY="184.0" text="Congratulations!" textFill="WHITE" visible="false">
+         <font>
+            <Font name="MV Boli" size="18.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.48" specularConstant="0.81" specularExponent="40.0" surfaceScale="3.15">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Label>
+      <Label fx:id="congLabel2" alignment="CENTER" layoutX="440.0" layoutY="184.0" text="Congratulations!" textFill="WHITE" visible="false">
+         <font>
+            <Font name="MV Boli" size="18.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.48" specularConstant="0.81" specularExponent="40.0" surfaceScale="3.15">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Label>
+      <Button fx:id="getMoneyBtn" layoutX="252.0" layoutY="354.0" mnemonicParsing="false" onAction="#getMoney" prefHeight="32.0" prefWidth="96.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Take Money" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
