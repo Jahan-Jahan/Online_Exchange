@@ -10,18 +10,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ExchangeController implements Initializable {
+
+    private final String URL = "jdbc:mysql://localhost:3306/crypto";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
@@ -33,8 +40,10 @@ public class ExchangeController implements Initializable {
     private ChoiceBox<String> srcChoiceBox, desChoiceBox;
     @FXML
     private ImageView exchangeImageView, coin1, coin2, coin3;
+    @FXML
+    private TextField textField1;
 
-    private String srcExchange, desExchange;
+    private String srcExchange = "dollar", desExchange;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -107,12 +116,12 @@ public class ExchangeController implements Initializable {
 
         translateTransitionCoin3.play();
 
-        String[] options = {"Dollar", "Toman", "Eur", "Yen", "GBP"};
+        String[] options = {"dollar", "toman", "euro", "yen", "pound"};
         ObservableList<String> items = FXCollections.observableArrayList(options);
 
         srcChoiceBox.setItems(items);
 
-        srcChoiceBox.setValue("Dollar");
+        srcChoiceBox.setValue("dollar");
 
         srcChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -122,7 +131,7 @@ public class ExchangeController implements Initializable {
 
         desChoiceBox.setItems(items);
 
-        desChoiceBox.setValue("Dollar");
+        desChoiceBox.setValue("dollar");
 
         desChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -150,7 +159,92 @@ public class ExchangeController implements Initializable {
 
     public void exchange(ActionEvent event) {
 
+        double dollarPrice = MainPageController.dollarPrice;
+        double euroPrice = MainPageController.euroPrice;
+        double tomanPrice = MainPageController.tomanPrice;
+        double yenPrice = MainPageController.yenPrice;
+        double poundPrice = MainPageController.poundPrice;
 
+        double srcPrice = Double.parseDouble(textField1.getText());
+
+        double srcAssets = 0;
+        double desAssets = 0;
+
+        String query = "SELECT " + srcExchange + ", " + desExchange + " FROM assets WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, LoginController.getUsername());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    srcAssets = rs.getDouble(srcExchange);
+                    desAssets = rs.getDouble(desExchange);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Sorry!");
+        alert.setHeaderText(null);
+        alert.setContentText("You have not enough money!");
+
+        if (srcAssets - srcPrice <= 0) {
+            alert.showAndWait();
+            return;
+        }
+
+        srcAssets -= srcPrice;
+
+        query = "UPDATE assets SET " + srcExchange + " = ? WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setDouble(1, srcAssets);
+            pstmt.setString(2, LoginController.getUsername());
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                System.out.println("The payment operation was completed successfully.");
+            } else {
+                System.out.println("There is a problem to payment.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        query = "INSERT INTO offers (username, src, des, price) VALUES(?, ?, ?, ?);";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, LoginController.getUsername());
+            pstmt.setString(2, srcExchange);
+            pstmt.setString(3, desExchange);
+            pstmt.setString(4, String.valueOf(srcPrice));
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                System.out.println("Offer successfully added.");
+            } else {
+                System.out.println("There is a problem to adding the offer.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        textField1.setText("");
 
     }
 }
