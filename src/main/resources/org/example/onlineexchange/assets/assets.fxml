@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="assetsPane" prefHeight="214.0" prefWidth="534.0" stylesheets="@assetsStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.AssetsController">
+   <children>
+      <Label fx:id="dollarLabel" alignment="CENTER" layoutX="22.0" layoutY="84.0" prefWidth="90.0" style="-fx-text-fill: gold;" text="Dollar" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="euroLabel" alignment="CENTER" layoutX="122.0" layoutY="84.0" prefWidth="90.0" style="-fx-text-fill: gold;" text="Euro" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="tomanLabel" alignment="CENTER" layoutX="222.0" layoutY="84.0" prefWidth="90.0" style="-fx-text-fill: gold;" text="Toman" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="yenLabel" alignment="CENTER" layoutX="322.0" layoutY="84.0" prefWidth="90.0" style="-fx-text-fill: gold;" text="Yen" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="poundLabel" alignment="CENTER" layoutX="422.0" layoutY="84.0" prefWidth="90.0" style="-fx-text-fill: gold;" text="Pound" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="dollarAssetsLabel" alignment="CENTER" layoutX="22.0" layoutY="148.0" prefWidth="90.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="euroAssetsLabel" alignment="CENTER" layoutX="122.0" layoutY="148.0" prefWidth="90.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="tomanAssetsLabel" alignment="CENTER" layoutX="222.0" layoutY="148.0" prefWidth="90.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="yenAssetsLabel" alignment="CENTER" layoutX="322.0" layoutY="148.0" prefWidth="90.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="poundAssetsLabel" alignment="CENTER" layoutX="422.0" layoutY="148.0" prefWidth="90.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="backBtn" layoutX="231.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="38.0" prefWidth="71.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="15.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.39" specularConstant="0.7" specularExponent="40.0" surfaceScale="2.5">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
+      <Label fx:id="totalLabel" layoutX="41.0" layoutY="24.0" prefHeight="18.0" prefWidth="162.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
