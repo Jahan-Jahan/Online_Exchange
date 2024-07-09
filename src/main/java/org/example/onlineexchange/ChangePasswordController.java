@@ -26,7 +26,8 @@ public class ChangePasswordController implements Initializable {
 
     private static final String URL = "jdbc:mysql://localhost:3306/crypto";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Your-Password";
+    private static final String PASSWORD = "Abolfazl_84";
+
     private Parent root;
     private Stage stage;
     private Scene scene;

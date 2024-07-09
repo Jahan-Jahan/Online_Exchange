@@ -233,6 +233,8 @@ public class SignUpController implements Initializable {
                 System.out.println("User creating has failed...");
             }
 
+            createWallet();
+
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
 
             Stage stage = (Stage) signUpBtn.getScene().getWindow();
@@ -300,5 +302,34 @@ public class SignUpController implements Initializable {
         Pattern pattern = Pattern.compile(regexPattern);
         Matcher matcher = pattern.matcher(unvalidatedEmail);
         return matcher.find();
+    }
+
+    public void createWallet() {
+
+        String query = "INSERT INTO assets (username, dollar, euro, toman, yen, pound) " +
+                "VALUES(?, ?, ?, ?, ?, ?);";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, inputUsername);
+            pstmt.setString(2, "5.0");
+            pstmt.setString(3, "0.0");
+            pstmt.setString(4, "0.0");
+            pstmt.setString(5, "0.0");
+            pstmt.setString(6, "0.0");
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                System.out.println("The wallet has created successfully.");
+            } else {
+                System.out.println("There is a problem to creating wallet.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

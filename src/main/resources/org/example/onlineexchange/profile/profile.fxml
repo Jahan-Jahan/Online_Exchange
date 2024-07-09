@@ -62,10 +62,20 @@
                </Lighting>
            </effect>
        </Button>
-      <Label fx:id="assetsLabel" layoutY="289.0" text="Your Assets: 0$" textFill="WHITE">
+      <Label fx:id="assetsLabel" layoutY="289.0" onMouseClicked="#clickOnAssets" text="Your Assets" textFill="WHITE">
          <font>
             <Font name="Sitka Text" size="20.0" />
          </font>
+         <effect>
+            <Lighting diffuseConstant="1.57" specularConstant="0.5" specularExponent="40.0" surfaceScale="6.0">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="270.0" />
+               </light>
+            </Lighting>
+         </effect>
       </Label>
       <Label fx:id="exchangeLabel" layoutX="452.0" layoutY="291.0" onMouseClicked="#goToExchangePage" text="Exchange" textFill="WHITE">
          <font>

@@ -37,13 +37,15 @@ public class ProfileController implements Initializable {
     private Stage stage;
     private Scene scene;
 
-    private String username, newUsername, email, newEmail, phone, newPhone;
+    public double dollar, euro, toman, yen, pound;
+
+    public String username, newUsername, email, newEmail, phone, newPhone;
 
     @FXML
     private Button backBtn, addMoney;
     @FXML
     private Label usernameLabel, emailLabel, phoneLabel, editLabel1,
-            editLabel2, editLabel3, assetsLabel, exchangeLabel;
+            editLabel2, editLabel3, assetsLabel, exchangeLabel, totalLabel;
     @FXML
     private ImageView profileImageView;
 
@@ -78,6 +80,13 @@ public class ProfileController implements Initializable {
         });
         exchangeLabel.setOnMouseExited(event -> {
             exchangeLabel.setStyle("-fx-text-fill: white;");
+        });
+
+        assetsLabel.setOnMouseEntered(event -> {
+            assetsLabel.setStyle("-fx-text-fill: gold;");
+        });
+        assetsLabel.setOnMouseExited(event -> {
+            assetsLabel.setStyle("-fx-text-fill: white;");
         });
 
         // Animation for username label
@@ -149,6 +158,8 @@ public class ProfileController implements Initializable {
         translateTransitionAssets.play();
 
         initializeLabels(username);
+
+        updateAssets();
 
     }
     public void initializeLabels(String currentUsername) {
@@ -315,6 +326,46 @@ public class ProfileController implements Initializable {
                 e.printStackTrace();
             }
 
+            String updateQuery2 = "UPDATE assets SET username = ? WHERE username = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery2)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Username updated successfully.");
+                } else {
+                    System.out.println("Failed to update username. User not found.");
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            String updateQuery3 = "UPDATE comments SET username = ? WHERE username = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery3)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Username updated successfully.");
+                } else {
+                    System.out.println("Failed to update username. User not found.");
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         } else {
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -441,21 +492,93 @@ public class ProfileController implements Initializable {
 
         }
 
-        String assetsLabelString = assetsLabel.getText();
-        assetsLabelString = assetsLabelString.split(":")[1].strip();
-        assetsLabelString = assetsLabelString.substring(0, assetsLabelString.length() - 1);
+        String query = "UPDATE assets SET dollar = ? WHERE username = ?;";
 
-        System.out.println(assetsLabelString);
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-        double value = Double.parseDouble(assetsLabelString);
-        value += moneyToAdd;
+            pstmt.setString(1, String.valueOf(dollar + moneyToAdd));
+            pstmt.setString(2, usernameLabel.getText());
 
-        assetsLabel.setText("Your Assets: " + String.valueOf(value) + "$");
+            int res = pstmt.executeUpdate();
 
+            if (res > 0) {
+                updateAssets();
+                System.out.println("Adding money has done successfully.");
+            } else {
+                System.out.println("There is a problem to adding money.");
+            }
 
-        // add the money to the database
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+    }
 
+    public void clickOnAssets() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("assets/assets.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Assets");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    public void updateAssets() {
+
+        String query = "SELECT * FROM assets WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, usernameLabel.getText());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    dollar = rs.getDouble("dollar");
+                    euro = rs.getDouble("euro");
+                    toman = rs.getDouble("toman");
+                    yen = rs.getDouble("yen");
+                    pound = rs.getDouble("pound");
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        query = "UPDATE assets SET dollar = ?, euro = ?, toman = ?, yen = ?, pound = ? WHERE username = ?;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, String.valueOf(dollar));
+            pstmt.setString(2, String.valueOf(euro));
+            pstmt.setString(3, String.valueOf(toman));
+            pstmt.setString(4, String.valueOf(yen));
+            pstmt.setString(5, String.valueOf(pound));
+            pstmt.setString(6, usernameLabel.getText());
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                System.out.println("Values have been updated successfully.");
+            } else {
+                System.out.println("There is a problem to updating assets.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

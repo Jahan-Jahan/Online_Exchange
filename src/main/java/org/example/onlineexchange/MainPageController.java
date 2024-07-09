@@ -23,14 +23,15 @@ public class MainPageController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Your-Passwordgit ";
 
     private Parent root;
     private Stage stage;
     private Scene scene;
 
     @FXML
-    private ImageView usdIcon, euroIcon, tomanIcon, yenIcon, poundIcon, soundImageView, profileImageView;
+    private ImageView usdIcon, euroIcon, tomanIcon, yenIcon, poundIcon,
+            soundImageView, profileImageView, gameImageView, exchangeImageView, historyImageView;
     @FXML
     private Button backBtn, premiumBtn;
     @FXML
@@ -43,6 +44,8 @@ public class MainPageController implements Initializable {
     private Label minLabel1, minLabel2, minLabel3, minLabel4, minLabel5;
     @FXML
     private Label maxLabel1, maxLabel2, maxLabel3, maxLabel4, maxLabel5;
+
+    public static double dollarPrice, euroPrice, tomanPrice, yenPrice, poundPrice;
 
     private boolean sound = false;
     private MusicController musicController;
@@ -64,6 +67,11 @@ public class MainPageController implements Initializable {
         calculateYen();
         calculatePound();
 
+        dollarPrice = Double.parseDouble(priceLabel1.getText());
+        euroPrice = Double.parseDouble(priceLabel2.getText());
+        tomanPrice = Double.parseDouble(priceLabel3.getText());
+        yenPrice = Double.parseDouble(priceLabel4.getText());
+        poundPrice = Double.parseDouble(priceLabel5.getText());
     }
 
     private void initializeEffects() {
@@ -153,6 +161,27 @@ public class MainPageController implements Initializable {
         });
         profileImageView.setOnMouseExited(event -> {
             profileImageView.setStyle("-fx-effect: none;");
+        });
+
+        gameImageView.setOnMouseEntered(e -> {
+            gameImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+        });
+        gameImageView.setOnMouseExited(e -> {
+            gameImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+        });
+
+        exchangeImageView.setOnMouseEntered(e -> {
+            exchangeImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+        });
+        exchangeImageView.setOnMouseExited(e -> {
+            exchangeImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+        });
+
+        historyImageView.setOnMouseEntered(e -> {
+            historyImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+        });
+        historyImageView.setOnMouseExited(e -> {
+            historyImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
         });
 
     }
@@ -671,6 +700,54 @@ public class MainPageController implements Initializable {
             changeLabel5.setStyle("-fx-text-fill: green;" +
                     "-fx-effect: dropshadow(gaussian, rgba(10,10,10,0.75), 7, 0.5, 0, 0);");
         }
+
+    }
+
+    public void clickOnGame() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game/game.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Game");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    public void clickOnExchange() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("offers/offers.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Offers");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    public void clickOnHistory() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("history/history.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("History");
+
+        stage.setScene(scene);
+
+        stage.show();
 
     }
 }

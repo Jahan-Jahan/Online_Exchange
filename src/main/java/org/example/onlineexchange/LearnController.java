@@ -176,7 +176,7 @@ public class LearnController implements Initializable {
         });
     }
 
-    public void backToHome(ActionEvent event) throws IOException {
+    public void goBack(ActionEvent event) throws IOException {
 
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
 
