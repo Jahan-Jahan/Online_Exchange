@@ -199,6 +199,21 @@
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
+            <ImageView fx:id="gameImageView" fitHeight="50.0" fitWidth="62.0" layoutX="682.0" layoutY="322.0" onMouseClicked="#clickOnGame" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../game_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="exchangeImageView" fitHeight="50.0" fitWidth="62.0" layoutX="682.0" layoutY="250.0" onMouseClicked="#clickOnExchange" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../exchange_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="historyImageView" fitHeight="50.0" fitWidth="62.0" layoutX="682.0" layoutY="178.0" onMouseClicked="#clickOnHistory" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../history.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>
