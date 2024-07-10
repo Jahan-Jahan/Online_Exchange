@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="swapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="404.0" stylesheets="@swapStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.SwapController">
+    <children>
+        <ChoiceBox fx:id="srcChoiceBox" layoutX="126.0" layoutY="82.0" prefWidth="150.0" style="-fx-background-radius: 8; -fx-background-color: #89CFF0;" />
+        <ChoiceBox fx:id="desChoiceBox" layoutX="127.0" layoutY="257.0" prefWidth="150.0" style="-fx-background-radius: 8; -fx-background-color: #89CFF0;" />
+        <ImageView fx:id="exchangeImageView" fitHeight="100.0" fitWidth="133.0" layoutX="151.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../exchange.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="swapBtn" layoutX="158.0" layoutY="330.0" mnemonicParsing="false" onAction="#swap" prefHeight="40.0" prefWidth="87.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Swap" textFill="WHITE">
+            <font>
+                <Font name="Verdana" size="14.0" />
+            </font>
+            <effect>
+                <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+                    <bumpInput>
+                        <Shadow />
+                    </bumpInput>
+                    <light>
+                        <Light.Distant />
+                    </light>
+                </Lighting>
+            </effect>
+        </Button>
+        <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="66.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+            <effect>
+                <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+                    <bumpInput>
+                        <Shadow />
+                    </bumpInput>
+                    <light>
+                        <Light.Distant azimuth="270.0" />
+                    </light>
+                </Lighting>
+            </effect>
+            <font>
+                <Font name="Verdana" size="14.0" />
+            </font>
+        </Button>
+        <ImageView fx:id="coin2" fitHeight="72.0" fitWidth="51.0" layoutX="20.0" layoutY="299.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../dollar_coin.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="coin3" fitHeight="72.0" fitWidth="51.0" layoutX="353.0" layoutY="167.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../dollar_coin.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="coin1" fitHeight="72.0" fitWidth="51.0" layoutY="116.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../dollar_coin.png" />
+            </image>
+        </ImageView>
+        <TextField fx:id="textField1" layoutX="152.0" layoutY="54.0" prefHeight="26.0" prefWidth="100.0" />
+      <Label layoutX="87.0" layoutY="14.0" text="You can swap your money here!" textFill="#fffc37">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
