@@ -7,13 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,8 +23,12 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProfileController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(ProfileController.class.getName());
 
     private SignUpController signUpObject = new SignUpController();
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
@@ -42,12 +44,14 @@ public class ProfileController implements Initializable {
     public String username, newUsername, email, newEmail, phone, newPhone;
 
     @FXML
-    private Button backBtn, addMoney;
+    private Button backBtn, embezzleBtn;
     @FXML
     private Label usernameLabel, emailLabel, phoneLabel, editLabel1,
-            editLabel2, editLabel3, assetsLabel, exchangeLabel, totalLabel;
+            editLabel2, editLabel3, assetsLabel, exchangeLabel;
     @FXML
     private ImageView profileImageView;
+    @FXML
+    private Line line1, line2, line3;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,6 +92,27 @@ public class ProfileController implements Initializable {
         assetsLabel.setOnMouseExited(event -> {
             assetsLabel.setStyle("-fx-text-fill: white;");
         });
+
+        if (LoginController.ISADMIN) {
+
+            editLabel1.setStyle("-fx-text-fill: #b9b9b9;");
+            editLabel1.setOnMouseClicked(null);
+            editLabel1.setOnMouseEntered(null);
+            line1.setVisible(true);
+
+            editLabel2.setStyle("-fx-text-fill: #b9b9b9;");
+            editLabel2.setOnMouseClicked(null);
+            editLabel2.setOnMouseEntered(null);
+            line2.setVisible(true);
+
+            editLabel3.setStyle("-fx-text-fill: #b9b9b9;");
+            editLabel3.setOnMouseClicked(null);
+            editLabel3.setOnMouseEntered(null);
+            line3.setVisible(true);
+
+            embezzleBtn.setVisible(true);
+
+        }
 
         // Animation for username label
         TranslateTransition translateTransitionUsername = new TranslateTransition();
@@ -179,7 +204,7 @@ public class ProfileController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from the table.");
         }
 
         usernameLabel.setText(currentUsername);
@@ -317,13 +342,13 @@ public class ProfileController implements Initializable {
                 int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Username updated successfully.");
+                    logger.log(Level.INFO, "Update query has done successfully.");
                 } else {
-                    System.out.println("Failed to update username. User not found.");
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
             String updateQuery2 = "UPDATE assets SET username = ? WHERE username = ?";
@@ -337,13 +362,13 @@ public class ProfileController implements Initializable {
                 int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Username updated successfully.");
+                    logger.log(Level.INFO, "Update query has done successfully.");
                 } else {
-                    System.out.println("Failed to update username. User not found.");
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
             String updateQuery3 = "UPDATE comments SET username = ? WHERE username = ?";
@@ -357,13 +382,53 @@ public class ProfileController implements Initializable {
                 int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Username updated successfully.");
+                    logger.log(Level.INFO, "Update query has done successfully.");
                 } else {
-                    System.out.println("Failed to update username. User not found.");
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+            String updateQuery4 = "UPDATE offers SET username = ? WHERE username = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery4)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    logger.log(Level.INFO, "Update query has done successfully.");
+                } else {
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
+                }
+
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+            String updateQuery5 = "UPDATE history SET username = ? WHERE username = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery5)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    logger.log(Level.INFO, "Update query has done successfully.");
+                } else {
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
+                }
+
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } else {
@@ -396,13 +461,13 @@ public class ProfileController implements Initializable {
                 int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Email updated successfully.");
+                    logger.log(Level.INFO, "Update query has done successfully.");
                 } else {
-                    System.out.println("Failed to update email. User not found.");
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } else {
@@ -435,13 +500,13 @@ public class ProfileController implements Initializable {
                 int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Phone updated successfully.");
+                    logger.log(Level.INFO, "Update query has done successfully.");
                 } else {
-                    System.out.println("Failed to update phone. User not found.");
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } else {
@@ -503,14 +568,13 @@ public class ProfileController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                updateAssets();
-                System.out.println("Adding money has done successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to adding money.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
     }
@@ -553,7 +617,7 @@ public class ProfileController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         query = "UPDATE assets SET dollar = ?, euro = ?, toman = ?, yen = ?, pound = ? WHERE username = ?;";
@@ -571,13 +635,13 @@ public class ProfileController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("Values have been updated successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to updating assets.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
     }
@@ -616,13 +680,103 @@ public class ProfileController implements Initializable {
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Profile updated successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("Failed to update Profile. User not found.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
+        }
+
+    }
+
+    public void embezzleByAdmin(ActionEvent event) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirm-embezzle");
+
+        alert.setHeaderText(null);
+
+        alert.setContentText("Are you about it?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+            return;
+        }
+
+        double total = 0;
+
+        double euroPrice = MainPageController.euroPrice;
+        double tomanPrice = MainPageController.tomanPrice;
+        double yenPrice = MainPageController.yenPrice;
+        double poundPrice = MainPageController.poundPrice;
+
+        String query = "SELECT * FROM assets;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    total += rs.getDouble("dollar") +
+                            (rs.getDouble("euro") * euroPrice) +
+                            (rs.getDouble("toman") * tomanPrice) +
+                            (rs.getDouble("yen") * yenPrice) +
+                            (rs.getDouble("pound") * poundPrice);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from table");
+        }
+
+        query = "UPDATE assets SET dollar = ? WHERE username = ?;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, String.valueOf(total));
+            pstmt.setString(2, "admin");
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                logger.log(Level.INFO, "Update query has done successfully.");
+            } else {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
+        }
+
+        query = "UPDATE assets SET dollar = ?, euro = ?, toman = ?, yen = ?, pound = ? WHERE username != ?;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, "0");
+            pstmt.setString(2, "0");
+            pstmt.setString(3, "0");
+            pstmt.setString(4, "0");
+            pstmt.setString(5, "0");
+            pstmt.setString(6, "admin");
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                logger.log(Level.INFO, "Update query has done successfully.");
+            } else {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
     }
