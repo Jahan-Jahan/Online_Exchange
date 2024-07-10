@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
@@ -66,5 +67,10 @@
          </image>
       </ImageView>
       <TextField fx:id="textField1" layoutX="152.0" layoutY="54.0" prefHeight="26.0" prefWidth="100.0" />
+      <Label layoutX="99.0" layoutY="14.0" prefHeight="26.0" prefWidth="206.0" text="You can create an offer here!" textFill="#fffc37">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

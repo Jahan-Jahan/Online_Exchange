@@ -18,10 +18,14 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignUpController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(SignUpController.class.getName());
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -223,14 +227,14 @@ public class SignUpController implements Initializable {
             int addedRows = preparedStatement.executeUpdate();
 
             if (addedRows > 0) {
-                System.out.println(inputUsername);
-                System.out.println(inputFirstName);
-                System.out.println(inputLastName);
-                System.out.println(inputPassword);
-                System.out.println(inputEmail);
-                System.out.println(inputPhoneNumber);
+                logger.log(Level.INFO, inputUsername);
+                logger.log(Level.INFO, inputFirstName);
+                logger.log(Level.INFO, inputLastName);
+                logger.log(Level.INFO, inputPassword);
+                logger.log(Level.INFO, inputEmail);
+                logger.log(Level.INFO, inputPhoneNumber);
             } else {
-                System.out.println("User creating has failed...");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
             createWallet();
@@ -322,13 +326,13 @@ public class SignUpController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("The wallet has created successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to creating wallet.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
     }

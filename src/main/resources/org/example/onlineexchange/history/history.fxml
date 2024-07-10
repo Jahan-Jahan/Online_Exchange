@@ -25,6 +25,21 @@
                </Lighting>
            </effect>
        </Button>
-      <ListView fx:id="historyListView" layoutX="80.0" layoutY="54.0" prefHeight="314.0" prefWidth="444.0" />
+      <ListView fx:id="historyListView" layoutX="80.0" layoutY="54.0" prefHeight="300.0" prefWidth="444.0" />
+      <Button layoutX="269.0" layoutY="362.0" mnemonicParsing="false" onAction="#export" prefHeight="30.0" prefWidth="61.0" style="-fx-background-color: #50C878; -fx-background-radius: 8;" text="Export" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="13.0" />
+         </font>
+         <effect>
+            <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="270.0" />
+               </light>
+            </Lighting>
+         </effect>
+      </Button>
    </children>
 </AnchorPane>

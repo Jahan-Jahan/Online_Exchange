@@ -16,8 +16,12 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(GameController.class.getName());
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -72,7 +76,7 @@ public class GameController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         query = "UPDATE assets SET dollar = ? WHERE username = ?;";
@@ -88,13 +92,13 @@ public class GameController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("Adding money to database has done successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to adding money.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         score = 0;

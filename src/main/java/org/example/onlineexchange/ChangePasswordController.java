@@ -19,10 +19,14 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChangePasswordController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(ChangePasswordController.class.getName());
 
     private static final String URL = "jdbc:mysql://localhost:3306/crypto";
     private static final String USERNAME = "root";
@@ -128,13 +132,13 @@ public class ChangePasswordController implements Initializable {
 
             // Check if update was successful
             if (rowsAffected > 0) {
-                System.out.println("Password updated successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("Failed to update password. User not found.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
     }
 }

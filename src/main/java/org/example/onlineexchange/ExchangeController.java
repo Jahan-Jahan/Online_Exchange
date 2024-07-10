@@ -23,12 +23,16 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExchangeController implements Initializable {
 
+    private static final Logger logger = Logger.getLogger(ExchangeController.class.getName());
+
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -44,6 +48,8 @@ public class ExchangeController implements Initializable {
     private TextField textField1;
 
     private String srcExchange = "dollar", desExchange;
+
+    private double exchangeTax;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -187,7 +193,7 @@ public class ExchangeController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -200,6 +206,8 @@ public class ExchangeController implements Initializable {
             return;
         }
 
+        exchangeTax = srcPrice * 0.09;
+        srcPrice -= srcPrice * 0.09;
         srcAssets -= srcPrice;
 
         query = "UPDATE assets SET " + srcExchange + " = ? WHERE username = ?";
@@ -213,13 +221,55 @@ public class ExchangeController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("The payment operation was completed successfully.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to payment.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
+        }
+
+        double adminPart = 0;
+        query = "SELECT " + srcExchange + " FROM assets WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, "admin");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    adminPart = rs.getDouble(srcExchange);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
+        }
+
+        adminPart += exchangeTax;
+
+        query = "UPDATE assets SET " + srcExchange + " = ? WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setDouble(1, adminPart);
+            pstmt.setString(2, "admin");
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                logger.log(Level.INFO, "Update query has done successfully.");
+            } else {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         query = "INSERT INTO offers (username, src, des, price) VALUES(?, ?, ?, ?);";
@@ -235,13 +285,13 @@ public class ExchangeController implements Initializable {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("Offer successfully added.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to adding the offer.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         textField1.setText("");

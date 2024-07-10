@@ -1,11 +1,11 @@
 package org.example.onlineexchange;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +21,18 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(LoginController.class.getName());
+
+    public static final String ADMINUSERNAME = "admin";
+    public static final String ADMINPASSWORD = "12345";
+    public static boolean ISADMIN = false;
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -46,7 +53,7 @@ public class LoginController implements Initializable {
     @FXML
     private Button submitBtn;
     @FXML
-    private Label captchaLabel, enterCaptchaLabel, signUpLabel, welcomeLabel, forgotPasswordLabel;
+    private Label captchaLabel, enterCaptchaLabel, signUpLabel, welcomeLabel, forgotPasswordLabel, adminLabel;
     @FXML
     private ImageView recaptchaImageView, userIconImageView, lockIconImageView;
 
@@ -98,7 +105,7 @@ public class LoginController implements Initializable {
 
         translateTransitionSignUp.setByX(0);
 
-        translateTransitionSignUp.setToX(125);
+        translateTransitionSignUp.setToX(93);
 
         translateTransitionSignUp.setCycleCount(1);
 
@@ -149,13 +156,30 @@ public class LoginController implements Initializable {
 
         translateTransitionForgotLabel.setByX(486);
 
-        translateTransitionForgotLabel.setToX(-147); // 339
+        translateTransitionForgotLabel.setToX(-105); // 381
 
         translateTransitionForgotLabel.setCycleCount(1);
 
         translateTransitionForgotLabel.setAutoReverse(false);
 
         translateTransitionForgotLabel.play();
+
+        // Animation for admin label
+        TranslateTransition translateTransitionAdminLabel = new TranslateTransition();
+
+        translateTransitionAdminLabel.setDuration(Duration.millis(800));
+
+        translateTransitionAdminLabel.setNode(adminLabel);
+
+        translateTransitionAdminLabel.setByY(0);
+
+        translateTransitionAdminLabel.setToY(-82); // 347
+
+        translateTransitionAdminLabel.setCycleCount(1);
+
+        translateTransitionAdminLabel.setAutoReverse(false);
+
+        translateTransitionAdminLabel.play();
 
         realCaptcha = generateCaptcha();
 
@@ -164,7 +188,6 @@ public class LoginController implements Initializable {
         signUpLabel.setOnMouseEntered(event -> {
             signUpLabel.setStyle("-fx-text-fill: #F08000;");
         });
-
         signUpLabel.setOnMouseExited(event -> {
             signUpLabel.setStyle("-fx-text-fill: white;");
         });
@@ -172,9 +195,15 @@ public class LoginController implements Initializable {
         forgotPasswordLabel.setOnMouseEntered(event -> {
             forgotPasswordLabel.setStyle("-fx-text-fill: #F08000;");
         });
-
         forgotPasswordLabel.setOnMouseExited(event -> {
             forgotPasswordLabel.setStyle("-fx-text-fill: white;");
+        });
+
+        adminLabel.setOnMouseEntered(event -> {
+            adminLabel.setStyle("-fx-text-fill: #F08000;");
+        });
+        adminLabel.setOnMouseExited(event -> {
+            adminLabel.setStyle("-fx-text-fill: white;");
         });
 
          recaptchaImageView.setOnMouseClicked(event -> {
@@ -208,7 +237,7 @@ public class LoginController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
     }
@@ -243,7 +272,7 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
-    public void login(ActionEvent event) throws SQLException, IOException {
+    public void login(ActionEvent event) throws IOException {
 
         inputUsername = usernameTextField.getText();
 
@@ -257,11 +286,10 @@ public class LoginController implements Initializable {
             if (connection != null) {
                 if (doesUserExist(connection, inputUsername)) accountExist = true;
             } else {
-                System.out.println("Failed to make connection!");
+                logger.log(Level.SEVERE, "There is an account with these information.");
             }
         } catch (SQLException e) {
-            System.err.println("Connection failed.");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -280,21 +308,45 @@ public class LoginController implements Initializable {
 
         createAccountAlert.setContentText("Do you want to create an account?");
 
-        if (accountExist && captchaValidation(inputCaptcha) && usernameValidation(inputUsername) && passwordValidation(inputPassword)) {
+        if (accountExist && captchaValidation(inputCaptcha) &&
+                usernameValidation(inputUsername) &&
+                passwordValidation(inputPassword)) {
 
-            // go to the main page!
+            new Thread(() -> {
+                try {
 
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
+                    ExchangeClient client = new ExchangeClient();
 
-            scene = new Scene(root);
+                    String response = client.sendRequest("User " + inputUsername + " logged in.");
 
-            stage = (Stage) submitBtn.getScene().getWindow();
+                    System.out.println("Server response: " + response);
 
-            stage.setScene(scene);
+                    client.close();
 
-            stage.setTitle("Main");
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "An error occur in making the main page ready.");
+                }
+            }).start();
 
-            stage.show();
+            Platform.runLater(() -> {
+                try {
+
+                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
+
+                    scene = new Scene(root);
+
+                    stage = (Stage) usernameTextField.getScene().getWindow();
+
+                    stage.setScene(scene);
+
+                    stage.setTitle("Main");
+
+                    stage.show();
+
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "An error occur in making the main page ready.");
+                }
+            });
 
         } else {
 
@@ -326,6 +378,7 @@ public class LoginController implements Initializable {
             }
         }
     }
+
     private static boolean doesUserExist(Connection connection, String username) {
 
         String query = "SELECT 1 FROM users WHERE username = ?";
@@ -338,13 +391,12 @@ public class LoginController implements Initializable {
                 return resultSet.next();  // If there's a result, the user exists
             }
         } catch (SQLException e) {
-            System.err.println("Query failed.");
-
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
 
             return false;
         }
     }
+
     private boolean isCorrectPassword() {
 
         String query = "SELECT password FROM users WHERE username = ?";
@@ -365,11 +417,12 @@ public class LoginController implements Initializable {
             return correctPassword.equals(inputPassword);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         return false;
     }
+
     public String generateCaptcha() {
         StringBuilder code = new StringBuilder();
 
@@ -390,25 +443,70 @@ public class LoginController implements Initializable {
 
         return captcha.toString();
     }
+
     public boolean captchaValidation(String unvalidatedCaptcha) {
         String allLowerRealCaptcha = realCaptcha.toLowerCase();
         String allLowerUnvalidatedCaptcha = unvalidatedCaptcha.toLowerCase();
         return allLowerRealCaptcha.equals(allLowerUnvalidatedCaptcha);
     }
+
     public boolean usernameValidation(String unvalidatedUsername) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9_@#$]{3,20}");
         Matcher matcher = pattern.matcher(unvalidatedUsername);
         return matcher.find();
     }
+
     public boolean passwordValidation(String unvalidatedPassword) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9!@#$%^&*_-]{8,20}");
         Matcher matcher = pattern.matcher(unvalidatedPassword);
         return matcher.find() && isCorrectPassword();
     }
+
     public static String getUsername() {
         return inputUsername;
     }
+
     public static void setUsername(String newUsername) {
         inputUsername = newUsername;
+    }
+
+    public void clickOnAdmin() throws IOException {
+
+        inputUsername = usernameTextField.getText();
+        inputPassword = passwordPasswordField.getText();
+        inputCaptcha = captchaTextField.getText();
+
+        if (ADMINUSERNAME.equals(inputUsername) &&
+                ADMINPASSWORD.equals(inputPassword) &&
+                captchaValidation(inputCaptcha)) {
+
+            ISADMIN = true;
+
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainPage/mainPage.fxml")));
+
+            scene = new Scene(root);
+
+            stage = (Stage) submitBtn.getScene().getWindow();
+
+            stage.setTitle("Main");
+
+            stage.setScene(scene);
+
+            stage.show();
+
+        } else {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setTitle("Admin-login");
+
+            alert.setHeaderText(null);
+
+            alert.setContentText("You entered wrong information!");
+
+            alert.show();
+
+        }
+
     }
 }

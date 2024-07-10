@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
@@ -105,6 +104,11 @@
          </image>
       </ImageView>
       <Label fx:id="forgotPasswordLabel" layoutX="486.0" layoutY="347.0" onMouseClicked="#clickOnForgotLabel" text="Forgot password" textFill="WHITE">
+         <font>
+            <Font name="MV Boli" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="adminLabel" layoutX="247.0" layoutY="429.0" onMouseClicked="#clickOnAdmin" prefHeight="18.0" text="Login as admin?" textFill="WHITE">
          <font>
             <Font name="MV Boli" size="14.0" />
          </font>

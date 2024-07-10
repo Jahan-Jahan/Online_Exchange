@@ -10,14 +10,20 @@ import javafx.scene.layout.VBox;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OfferCell extends ListCell<OffersController.Offer> {
+
+    private static final Logger logger = Logger.getLogger(OfferCell.class.getName());
 
     private final OffersController controller;
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
     private final String PASSWORD = "Your-Password";
+
+    private double exchangeTax;
 
     @Override
     protected void updateItem(OffersController.Offer offer, boolean empty) {
@@ -53,7 +59,7 @@ public class OfferCell extends ListCell<OffersController.Offer> {
         this.controller = controller;
     }
 
-    private void handlePurchaseOffer(OffersController.Offer offer) {
+    private synchronized void handlePurchaseOffer(OffersController.Offer offer) {
 
         String[] details = offer.getTitle().split("-");
         String seller = details[0];
@@ -83,7 +89,7 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         double dollarPrice = MainPageController.dollarPrice;
@@ -212,13 +218,13 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("The purchase offer was successfully completed.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to buying.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         double srcSellerAssets = 0;
@@ -241,9 +247,11 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
+        exchangeTax = result * 0.09;
+        result -= result * 0.09;
         desSellerAssets += result;
 
         query = "UPDATE assets SET " + des + " = ? WHERE username = ?;";
@@ -257,15 +265,56 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("The purchase offer was successfully completed.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to buying.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
+        double adminPart = 0;
+        query = "SELECT " + des + " FROM assets WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, "admin");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    adminPart = rs.getDouble(des);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
+        }
+
+        adminPart += exchangeTax;
+
+        query = "UPDATE assets SET " + des + " = ? WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setDouble(1, adminPart);
+            pstmt.setString(2, "admin");
+
+            int res = pstmt.executeUpdate();
+
+            if (res > 0) {
+                logger.log(Level.INFO, "Update query has done successfully.");
+            } else {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
+        }
 
         // Add to history page then remove it.
 
@@ -302,13 +351,13 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("This added to the history page.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to adding to the history.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         query = "DELETE FROM offers WHERE id = ?;";
@@ -321,13 +370,13 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             int res = pstmt.executeUpdate();
 
             if (res > 0) {
-                System.out.println("The offer successfully deleted.");
+                logger.log(Level.INFO, "Update query has done successfully.");
             } else {
-                System.out.println("There is a problem to deleting the offer.");
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         controller.removeOffer(offer);

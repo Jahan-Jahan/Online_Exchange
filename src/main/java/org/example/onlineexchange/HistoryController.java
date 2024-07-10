@@ -12,13 +12,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HistoryController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(HistoryController.class.getName());
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -62,7 +68,7 @@ public class HistoryController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from the table.");
         }
 
     }
@@ -84,6 +90,45 @@ public class HistoryController implements Initializable {
         stage.setScene(scene);
 
         stage.show();
+
+    }
+
+    public void export(ActionEvent event) {
+
+        String output = "C:/Users/pc/Desktop/onlineExchange/src/main/" +
+                "resources/org/example/onlineexchange/history.csv";
+
+        String query = "SELECT * FROM history ORDER BY id DESC;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery();
+             BufferedWriter bw = new BufferedWriter(new FileWriter(output))) {
+
+            int columnCount = rs.getMetaData().getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                bw.write(rs.getMetaData().getColumnName(i));
+                if (i < columnCount) bw.write(",");
+            }
+            bw.newLine();
+
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    bw.write(rs.getString(i));
+                    if (i < columnCount) bw.write(",");
+                }
+                bw.newLine();
+            }
+
+            logger.log(Level.INFO, "Data has been written to {0}", output);
+
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from the table.");
+        } catch (IOException e) {
+            logger.log(Level.INFO, "An error occur in writing data in the file.");
+        }
 
     }
 

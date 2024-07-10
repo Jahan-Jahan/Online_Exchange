@@ -17,8 +17,12 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OffersController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(OffersController.class.getName());
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -60,7 +64,7 @@ public class OffersController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
     }
