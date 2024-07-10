@@ -63,7 +63,7 @@
             <Label layoutX="106.0" layoutY="313.0" text="(Toman)" textFill="WHITE" />
             <Label layoutX="113.0" layoutY="363.0" text="(YEN)" textFill="WHITE" />
             <Label layoutX="113.0" layoutY="413.0" text="(GBP)" textFill="WHITE" />
-            <Label alignment="CENTER" layoutX="88.0" layoutY="14.0" prefHeight="111.0" prefWidth="569.0" text="This is the news board!" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="88.0" layoutY="12.0" prefHeight="111.0" prefWidth="569.0" text="This is the news board!" textFill="WHITE">
                <font>
                   <Font name="Sitka Text" size="50.0" />
                </font>
@@ -209,11 +209,51 @@
                   <Image url="@../exchange_icon.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="historyImageView" fitHeight="50.0" fitWidth="62.0" layoutX="682.0" layoutY="178.0" onMouseClicked="#clickOnHistory" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="historyImageView" fitHeight="50.0" fitWidth="62.0" layoutX="682.0" layoutY="180.0" onMouseClicked="#clickOnHistory" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../history.png" />
                </image>
             </ImageView>
+            <Label fx:id="historyLabel" alignment="CENTER" layoutX="640.0" layoutY="196.0" prefHeight="9.0" prefWidth="40.0" text="History" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="offersLabel" alignment="CENTER" layoutX="640.0" layoutY="269.0" prefHeight="9.0" prefWidth="40.0" text="See offers" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="8.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameLabel" alignment="CENTER" layoutX="640.0" layoutY="341.0" prefHeight="9.0" prefWidth="40.0" text="play!" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="musicLabel" alignment="CENTER" layoutX="640.0" layoutY="416.0" prefHeight="9.0" prefWidth="40.0" text="Music" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="10.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="swapImageView" fitHeight="50.0" fitWidth="50.0" layoutX="682.0" layoutY="108.0" onMouseClicked="#clickOnSwap" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../swap.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="swapLabel" alignment="CENTER" layoutX="640.0" layoutY="126.0" prefHeight="9.0" prefWidth="40.0" text="swap" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="10.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="transferImageView" fitHeight="50.0" fitWidth="50.0" layoutX="682.0" layoutY="38.0" onMouseClicked="#clickOnTransfer" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../transfer.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="transferLabel" alignment="CENTER" layoutX="640.0" layoutY="58.0" prefHeight="10.0" prefWidth="35.0" text="transfer" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="9.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>
@@ -235,22 +275,22 @@
                   </Lighting>
                </effect>
             </Button>
-            <Label fx:id="learnLabel" layoutX="135.0" layoutY="25.0" onMouseClicked="#clickForLearn" text="Learn" textFill="#848484">
+            <Label fx:id="learnLabel" layoutX="220.0" layoutY="25.0" onMouseClicked="#clickForLearn" text="Learn" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="aboutLabel" layoutX="215.0" layoutY="25.0" onMouseClicked="#clickForAbout" text="About us" textFill="#848484">
+            <Label fx:id="aboutLabel" layoutX="290.0" layoutY="25.0" onMouseClicked="#clickForAbout" text="About us" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="commentLabel" layoutX="324.6" layoutY="25.0" onMouseClicked="#clickForComment" text="Comment" textFill="#848484">
+            <Label fx:id="commentLabel" layoutX="385.0" layoutY="25.0" onMouseClicked="#clickForComment" text="Comment" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="donateLabel" layoutX="441.4" layoutY="25.0" onMouseClicked="#clickForDonate" text="Donate!" textFill="#848484">
+            <Label fx:id="donateLabel" layoutX="490.0" layoutY="25.0" onMouseClicked="#clickForDonate" text="Donate!" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
@@ -260,7 +300,7 @@
                   <Image url="@../userProfile.png" />
                </image>
             </ImageView>
-            <Button fx:id="premiumBtn" layoutX="566.0" layoutY="17.0" mnemonicParsing="false" onAction="#getPremiumAccount" prefHeight="39.0" prefWidth="87.0" style="-fx-background-color: #FFD700; -fx-background-radius: 10;" text="Premium" textFill="WHITE">
+            <Button fx:id="premiumBtn" layoutX="579.0" layoutY="17.0" mnemonicParsing="false" onAction="#getPremiumAccount" prefHeight="39.0" prefWidth="87.0" style="-fx-background-color: #FFD700; -fx-background-radius: 10;" text="Premium" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="14.0" />
                </font>
@@ -275,6 +315,11 @@
                   </Lighting>
                </effect>
             </Button>
+            <Label fx:id="timeLabel" layoutX="88.0" layoutY="27.0" prefHeight="20.0" prefWidth="125.0" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="11.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </top>

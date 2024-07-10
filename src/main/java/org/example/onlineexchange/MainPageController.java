@@ -1,5 +1,7 @@
 package org.example.onlineexchange;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,18 +14,25 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainPageController implements Initializable {
 
+    private static final Logger logger = Logger.getLogger(MainPageController.class.getName());
+
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Passwordgit ";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
@@ -31,7 +40,10 @@ public class MainPageController implements Initializable {
 
     @FXML
     private ImageView usdIcon, euroIcon, tomanIcon, yenIcon, poundIcon,
-            soundImageView, profileImageView, gameImageView, exchangeImageView, historyImageView;
+            soundImageView, profileImageView, gameImageView, exchangeImageView,
+            historyImageView, swapImageView, transferImageView;
+    @FXML
+    private Label gameLabel, offersLabel, historyLabel, musicLabel, timeLabel, swapLabel, transferLabel;
     @FXML
     private Button backBtn, premiumBtn;
     @FXML
@@ -46,6 +58,9 @@ public class MainPageController implements Initializable {
     private Label maxLabel1, maxLabel2, maxLabel3, maxLabel4, maxLabel5;
 
     public static double dollarPrice, euroPrice, tomanPrice, yenPrice, poundPrice;
+    public static ArrayList<String> changes = new ArrayList<>();
+    public static ArrayList<String> totalMin = new ArrayList<>();
+    public static ArrayList<String> totalMax = new ArrayList<>();
 
     private boolean sound = false;
     private MusicController musicController;
@@ -59,6 +74,10 @@ public class MainPageController implements Initializable {
             profileImageView.setImage(LoginController.profileImage);
         }
 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateDateTime(timeLabel)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
         initializeEffects();
 
         calculateDollar();
@@ -66,6 +85,24 @@ public class MainPageController implements Initializable {
         calculateToman();
         calculateYen();
         calculatePound();
+
+        changes.add(changeLabel1.getText());
+        changes.add(changeLabel2.getText());
+        changes.add(changeLabel3.getText());
+        changes.add(changeLabel4.getText());
+        changes.add(changeLabel5.getText());
+
+        totalMin.add(minLabel1.getText());
+        totalMin.add(minLabel2.getText());
+        totalMin.add(minLabel3.getText());
+        totalMin.add(minLabel4.getText());
+        totalMin.add(minLabel5.getText());
+
+        totalMax.add(maxLabel1.getText());
+        totalMax.add(maxLabel2.getText());
+        totalMax.add(maxLabel3.getText());
+        totalMax.add(maxLabel4.getText());
+        totalMax.add(maxLabel5.getText());
 
         dollarPrice = Double.parseDouble(priceLabel1.getText());
         euroPrice = Double.parseDouble(priceLabel2.getText());
@@ -151,9 +188,11 @@ public class MainPageController implements Initializable {
         soundImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 5, 0.5, 0, 0);");
         soundImageView.setOnMouseEntered(e -> {
             soundImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            musicLabel.setVisible(true);
         });
         soundImageView.setOnMouseExited(e -> {
             soundImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 5, 0.5, 0, 0);");
+            musicLabel.setVisible(false);
         });
 
         profileImageView.setOnMouseEntered(event -> {
@@ -165,23 +204,47 @@ public class MainPageController implements Initializable {
 
         gameImageView.setOnMouseEntered(e -> {
             gameImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            gameLabel.setVisible(true);
         });
         gameImageView.setOnMouseExited(e -> {
             gameImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            gameLabel.setVisible(false);
         });
 
         exchangeImageView.setOnMouseEntered(e -> {
             exchangeImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            offersLabel.setVisible(true);
         });
         exchangeImageView.setOnMouseExited(e -> {
             exchangeImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            offersLabel.setVisible(false);
         });
 
         historyImageView.setOnMouseEntered(e -> {
             historyImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            historyLabel.setVisible(true);
         });
         historyImageView.setOnMouseExited(e -> {
             historyImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            historyLabel.setVisible(false);
+        });
+
+        swapImageView.setOnMouseEntered(e -> {
+            swapImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            swapLabel.setVisible(true);
+        });
+        swapImageView.setOnMouseExited(e -> {
+            swapImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            swapLabel.setVisible(false);
+        });
+
+        transferImageView.setOnMouseEntered(e -> {
+            transferImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            transferLabel.setVisible(true);
+        });
+        transferImageView.setOnMouseExited(e -> {
+            transferImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            transferLabel.setVisible(false);
         });
 
     }
@@ -436,7 +499,7 @@ public class MainPageController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Collections.reverse(columnData);
@@ -493,7 +556,7 @@ public class MainPageController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Collections.reverse(columnData);
@@ -550,7 +613,7 @@ public class MainPageController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Collections.reverse(columnData);
@@ -607,7 +670,7 @@ public class MainPageController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Collections.reverse(columnData);
@@ -664,7 +727,7 @@ public class MainPageController implements Initializable {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
         Collections.reverse(columnData);
@@ -749,5 +812,42 @@ public class MainPageController implements Initializable {
 
         stage.show();
 
+    }
+
+    public void clickOnSwap() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("swap/swap.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Swap");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    public void clickOnTransfer() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("transfer/transfer.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Transfer");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    private void updateDateTime(Label label) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        label.setText(LocalDateTime.now().format(formatter));
     }
 }
