@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -28,9 +29,21 @@ public class EuroController implements Initializable {
     private Button backBtn, exchangeBtn;
     @FXML
     private ImageView euroImageView1, euroImageView2, euroImageView3;
+    @FXML
+    private Label price, change, min, max;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        price.setText(String.valueOf(MainPageController.euroPrice));
+        change.setText(MainPageController.changes.get(1));
+        min.setText(MainPageController.totalMin.get(1));
+        max.setText(MainPageController.totalMax.get(1));
+
+        double ch = Double.parseDouble(change.getText().substring(1));
+
+        if (ch < 0) change.setStyle("-fx-text-fill: red;");
+        else if (ch > 0) change.setStyle("-fx-text-fill: green;");
 
         // Animation for coin1
         TranslateTransition translateTransitionCoin1 = new TranslateTransition();
