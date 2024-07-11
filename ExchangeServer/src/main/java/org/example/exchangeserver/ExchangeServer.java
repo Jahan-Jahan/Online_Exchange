@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,16 +19,21 @@ public class ExchangeServer {
 
     public static void main(String[] args) {
 
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
+
         ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 
-            logger.log(Level.SEVERE, "Server started, waiting for clients...");
+            logger.log(Level.INFO, "Server started, waiting for clients...");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
 
-                logger.log(Level.SEVERE, "Client connected: " + clientSocket.getInetAddress());
+                logger.log(Level.INFO, "Client connected: " + clientSocket.getInetAddress());
 
                 threadPool.execute(new ClientHandler(clientSocket));
             }
@@ -55,7 +61,7 @@ class ClientHandler implements Runnable {
 
             while ((line = in.readLine()) != null) {
 
-                logger.log(Level.SEVERE, "Received: " + line);
+                logger.log(Level.INFO, "Received: " + line);
 
                 String response = processRequest(line);
 
