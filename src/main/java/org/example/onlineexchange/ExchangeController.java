@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,12 +48,17 @@ public class ExchangeController implements Initializable {
     @FXML
     private TextField textField1;
 
-    private String srcExchange = "dollar", desExchange;
+    private String srcExchange = "dollar", desExchange = "dollar";
 
     private double exchangeTax;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
 
         // Animation for the image view
         TranslateTransition translateTransitionExchange = new TranslateTransition();
@@ -207,8 +213,7 @@ public class ExchangeController implements Initializable {
         }
 
         exchangeTax = srcPrice * 0.09;
-        srcPrice -= srcPrice * 0.09;
-        srcAssets -= srcPrice;
+        srcAssets -= (srcPrice + exchangeTax);
 
         query = "UPDATE assets SET " + srcExchange + " = ? WHERE username = ?";
 

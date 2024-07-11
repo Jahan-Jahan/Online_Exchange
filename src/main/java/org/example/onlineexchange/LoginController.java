@@ -21,6 +21,7 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -59,6 +60,11 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
 
         initializeProfile();
 
@@ -315,7 +321,7 @@ public class LoginController implements Initializable {
             new Thread(() -> {
                 try {
 
-                    ExchangeClient client = new ExchangeClient();
+                    Client client = new Client();
 
                     String response = client.sendRequest("User " + inputUsername + " logged in.");
 

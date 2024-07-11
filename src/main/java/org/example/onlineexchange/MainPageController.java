@@ -34,7 +34,7 @@ public class MainPageController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Abolfazl_84";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;

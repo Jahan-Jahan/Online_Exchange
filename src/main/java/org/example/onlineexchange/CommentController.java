@@ -19,8 +19,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CommentController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(CommentController.class.getName());
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
@@ -38,7 +43,10 @@ public class CommentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
 
     }
     public void backToHome(ActionEvent event) throws IOException {
@@ -70,16 +78,16 @@ public class CommentController implements Initializable {
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, commentTextArea.getText());
 
-        int addedRows = preparedStatement.executeUpdate();
+        int res = preparedStatement.executeUpdate();
 
-        if (addedRows == 1) {
+        if (res > 1) {
 
             System.out.println("Commented!");
 
             commentTextArea.setText("");
 
         } else {
-            System.out.println("There is a problem for commenting...");
+            logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
