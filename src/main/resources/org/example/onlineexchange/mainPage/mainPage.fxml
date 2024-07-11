@@ -275,22 +275,22 @@
                   </Lighting>
                </effect>
             </Button>
-            <Label fx:id="learnLabel" layoutX="220.0" layoutY="25.0" onMouseClicked="#clickForLearn" text="Learn" textFill="#848484">
+            <Label fx:id="learnLabel" layoutX="226.0" layoutY="25.0" onMouseClicked="#clickForLearn" text="Learn" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="aboutLabel" layoutX="290.0" layoutY="25.0" onMouseClicked="#clickForAbout" text="About us" textFill="#848484">
+            <Label fx:id="aboutLabel" layoutX="296.0" layoutY="25.0" onMouseClicked="#clickForAbout" text="About us" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="commentLabel" layoutX="385.0" layoutY="25.0" onMouseClicked="#clickForComment" text="Comment" textFill="#848484">
+            <Label fx:id="commentLabel" layoutX="391.0" layoutY="25.0" onMouseClicked="#clickForComment" text="Comment" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="donateLabel" layoutX="490.0" layoutY="25.0" onMouseClicked="#clickForDonate" text="Donate!" textFill="#848484">
+            <Label fx:id="donateLabel" layoutX="496.0" layoutY="25.0" onMouseClicked="#clickForDonate" text="Donate!" textFill="#848484">
                <font>
                   <Font name="Verdana" size="18.0" />
                </font>
@@ -315,7 +315,7 @@
                   </Lighting>
                </effect>
             </Button>
-            <Label fx:id="timeLabel" layoutX="88.0" layoutY="27.0" prefHeight="20.0" prefWidth="125.0" textFill="WHITE">
+            <Label fx:id="timeLabel" layoutX="90.0" layoutY="20.0" prefHeight="33.0" prefWidth="126.0" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="11.0" />
                </font>

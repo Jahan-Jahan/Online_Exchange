@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +24,7 @@ public class TransferController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -35,11 +34,32 @@ public class TransferController implements Initializable {
     private Button backBtn;
     @FXML
     private TextField usernameTextField, priceTextField;
+    @FXML
+    private RadioButton dollarRadioBtn, tomanRadioBtn, euroRadioBtn, yenRadioBtn, poundRadioBtn;
+
+    private ToggleGroup toggleGroup;
+
+    private String choice;
 
     private double exchangeTax;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
+
+        toggleGroup = new ToggleGroup();
+
+        dollarRadioBtn.setToggleGroup(toggleGroup);
+        euroRadioBtn.setToggleGroup(toggleGroup);
+        tomanRadioBtn.setToggleGroup(toggleGroup);
+        yenRadioBtn.setToggleGroup(toggleGroup);
+        poundRadioBtn.setToggleGroup(toggleGroup);
+
+        dollarRadioBtn.setSelected(true);
 
     }
 
@@ -61,12 +81,18 @@ public class TransferController implements Initializable {
 
     public synchronized void transfer(ActionEvent event) {
 
+        if (dollarRadioBtn.isSelected()) choice = "dollar";
+        else if (tomanRadioBtn.isSelected()) choice = "toman";
+        else if (euroRadioBtn.isSelected()) choice = "euro";
+        else if (yenRadioBtn.isSelected()) choice = "yen";
+        else if (poundRadioBtn.isSelected()) choice = "pound";
+
         String receiver = usernameTextField.getText();
         double price = Double.parseDouble(priceTextField.getText());
 
-        double senderDollar = 0;
+        double senderMoney = 0;
 
-        String query = "SELECT dollar FROM assets WHERE username = ?;";
+        String query = "SELECT " + choice + " FROM assets WHERE username = ?;";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -76,7 +102,7 @@ public class TransferController implements Initializable {
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 if (rs.next()) {
-                    senderDollar = rs.getDouble("dollar");
+                    senderMoney = rs.getDouble(choice);
                 }
 
             }
@@ -90,21 +116,20 @@ public class TransferController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("You have not enough money!");
 
-        if (senderDollar - price <= 0) {
+        if (senderMoney - price <= 0) {
             alert.show();
             return;
         }
 
         exchangeTax = price * 0.09;
-        price -= price * 0.09;
-        senderDollar -= price;
+        senderMoney -= (price + exchangeTax);
 
-        query = "UPDATE assets SET dollar = ? WHERE username = ?";
+        query = "UPDATE assets SET " + choice + " = ? WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setDouble(1, senderDollar);
+            pstmt.setDouble(1, senderMoney);
             pstmt.setString(2, LoginController.getUsername());
 
             int res = pstmt.executeUpdate();
@@ -120,7 +145,7 @@ public class TransferController implements Initializable {
         }
 
         double adminPart = 0;
-        query = "SELECT dollar FROM assets WHERE username = ?";
+        query = "SELECT " + choice + " FROM assets WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -130,7 +155,7 @@ public class TransferController implements Initializable {
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 if (rs.next()) {
-                    adminPart = rs.getDouble("dollar");
+                    adminPart = rs.getDouble(choice);
                 }
 
             }
@@ -141,7 +166,7 @@ public class TransferController implements Initializable {
 
         adminPart += exchangeTax;
 
-        query = "UPDATE assets SET dollar = ? WHERE username = ?";
+        query = "UPDATE assets SET " + choice + " = ? WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -161,8 +186,8 @@ public class TransferController implements Initializable {
             logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
 
-        double receiverDollar = 0;
-        query = "SELECT dollar FROM assets WHERE username = ?";
+        double receiverMoney = 0;
+        query = "SELECT " + choice + " FROM assets WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -172,7 +197,7 @@ public class TransferController implements Initializable {
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 if (rs.next()) {
-                    receiverDollar = rs.getDouble("dollar");
+                    receiverMoney = rs.getDouble(choice);
                 }
 
             }
@@ -181,14 +206,14 @@ public class TransferController implements Initializable {
             logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
-        receiverDollar += price;
+        receiverMoney += price;
 
-        query = "UPDATE assets SET dollar = ? WHERE username = ?";
+        query = "UPDATE assets SET " + choice + " = ? WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setDouble(1, receiverDollar);
+            pstmt.setDouble(1, receiverMoney);
             pstmt.setString(2, receiver);
 
             int res = pstmt.executeUpdate();

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,6 +24,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +34,7 @@ public class MainPageController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -67,6 +69,11 @@ public class MainPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
 
         musicController = new MusicController();
 
@@ -246,6 +253,9 @@ public class MainPageController implements Initializable {
             transferImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
             transferLabel.setVisible(false);
         });
+
+        timeLabel.setStyle("-fx-border-color: gold;" +
+                "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 5, 0.5, 0, 0);");
 
     }
 
