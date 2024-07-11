@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class SwapController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -47,12 +48,17 @@ public class SwapController implements Initializable {
     @FXML
     private TextField textField1;
 
-    private String srcExchange = "dollar", desExchange;
+    private String srcExchange = "dollar", desExchange = "dollar";
 
     private double exchangeTax;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
 
         // Animation for the image view
         TranslateTransition translateTransitionExchange = new TranslateTransition();
@@ -302,9 +308,7 @@ public class SwapController implements Initializable {
         }
 
         exchangeTax = srcPrice * 0.09;
-        srcPrice -= srcPrice * 0.09;
-        srcAssets -= srcPrice;
-
+        srcAssets -= (srcPrice + exchangeTax);
         desAssets += result;
 
         query = "UPDATE assets SET " + srcExchange + " = ?, " + desExchange + " = ? WHERE username = ?";

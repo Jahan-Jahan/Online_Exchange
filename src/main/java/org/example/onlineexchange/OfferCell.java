@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,12 +22,18 @@ public class OfferCell extends ListCell<OffersController.Offer> {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private double exchangeTax;
 
     @Override
     protected void updateItem(OffersController.Offer offer, boolean empty) {
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
+
         super.updateItem(offer, empty);
 
         if (empty || offer == null) {
@@ -203,6 +210,7 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             return;
         }
 
+        exchangeTax = result * 0.09;
         srcAssets += price;
         desAssets -= result;
 
@@ -250,8 +258,6 @@ public class OfferCell extends ListCell<OffersController.Offer> {
             logger.log(Level.SEVERE, "An error occur in reading data from table.");
         }
 
-        exchangeTax = result * 0.09;
-        result -= result * 0.09;
         desSellerAssets += result;
 
         query = "UPDATE assets SET " + des + " = ? WHERE username = ?;";
