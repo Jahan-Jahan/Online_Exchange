@@ -29,7 +29,7 @@ public class CommentController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Abolfazl_84";
+    private final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
@@ -80,9 +80,9 @@ public class CommentController implements Initializable {
 
         int res = preparedStatement.executeUpdate();
 
-        if (res > 1) {
+        if (res > 0) {
 
-            System.out.println("Commented!");
+            logger.log(Level.INFO, "Commented successfully.");
 
             commentTextArea.setText("");
 

@@ -28,13 +28,12 @@ public class OfferCell extends ListCell<OffersController.Offer> {
 
     @Override
     protected void updateItem(OffersController.Offer offer, boolean empty) {
+        super.updateItem(offer, empty);
 
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new ColorFormatter());
         logger.addHandler(consoleHandler);
         logger.setUseParentHandlers(false);
-
-        super.updateItem(offer, empty);
 
         if (empty || offer == null) {
             setText(null);

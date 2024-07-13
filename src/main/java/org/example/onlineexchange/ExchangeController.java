@@ -48,7 +48,7 @@ public class ExchangeController implements Initializable {
     @FXML
     private TextField textField1;
 
-    private String srcExchange = "dollar", desExchange = "dollar";
+    private String srcExchange = "dollar", desExchange = "euro";
 
     private double exchangeTax;
 
@@ -133,7 +133,7 @@ public class ExchangeController implements Initializable {
 
         srcChoiceBox.setItems(items);
 
-        srcChoiceBox.setValue("dollar");
+        srcChoiceBox.setValue(srcExchange);
 
         srcChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -143,7 +143,7 @@ public class ExchangeController implements Initializable {
 
         desChoiceBox.setItems(items);
 
-        desChoiceBox.setValue("dollar");
+        desChoiceBox.setValue(desExchange);
 
         desChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -302,4 +302,6 @@ public class ExchangeController implements Initializable {
         textField1.setText("");
 
     }
+
+    public void onEnter(ActionEvent event) { exchange(event); }
 }

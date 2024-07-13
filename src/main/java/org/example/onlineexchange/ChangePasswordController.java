@@ -30,7 +30,7 @@ public class ChangePasswordController implements Initializable {
 
     private static final String URL = "jdbc:mysql://localhost:3306/crypto";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Abolfazl_84";
+    private static final String PASSWORD = "Your-Password";
 
     private Parent root;
     private Stage stage;
@@ -77,9 +77,7 @@ public class ChangePasswordController implements Initializable {
 
         if (passwordValidation(inputPassword, inputRepeatPassword)) {
 
-            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-
-            changeUserPassword(connection, email, inputPassword);
+            changeUserPassword(email, inputPassword);
 
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login/login.fxml")));
 
@@ -115,7 +113,7 @@ public class ChangePasswordController implements Initializable {
         Matcher matcher = pattern.matcher(unvalidatedPassword1);
         return matcher.find() && unvalidatedPassword1.equals(unvalidatedPassword2);
     }
-    private static void changeUserPassword(Connection connection, String userEmail, String newPassword) {
+    private static void changeUserPassword(String userEmail, String newPassword) {
 
         String updateQuery = "UPDATE users SET password = ? WHERE email = ?";
 
@@ -141,4 +139,6 @@ public class ChangePasswordController implements Initializable {
             logger.log(Level.SEVERE, "An error occur in execute the update query.");
         }
     }
+
+    public void onEnter(ActionEvent event) throws IOException, SQLException { changePassword(event); }
 }
