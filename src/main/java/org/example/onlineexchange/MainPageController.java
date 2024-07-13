@@ -17,8 +17,7 @@ import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -43,9 +42,10 @@ public class MainPageController implements Initializable {
     @FXML
     private ImageView usdIcon, euroIcon, tomanIcon, yenIcon, poundIcon,
             soundImageView, profileImageView, gameImageView, exchangeImageView,
-            historyImageView, swapImageView, transferImageView;
+            historyImageView, swapImageView, transferImageView, searchImageView, blogImageView;
     @FXML
-    private Label gameLabel, offersLabel, historyLabel, musicLabel, timeLabel, swapLabel, transferLabel;
+    private Label gameLabel, offersLabel, historyLabel, musicLabel,
+            timeLabel, swapLabel, transferLabel, searchLabel, blogLabel;
     @FXML
     private Button backBtn, premiumBtn;
     @FXML
@@ -77,10 +77,6 @@ public class MainPageController implements Initializable {
 
         musicController = new MusicController();
 
-        if (LoginController.profileImage != null) {
-            profileImageView.setImage(LoginController.profileImage);
-        }
-
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateDateTime(timeLabel)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -92,6 +88,8 @@ public class MainPageController implements Initializable {
         calculateToman();
         calculateYen();
         calculatePound();
+
+        setProfile();
 
         changes.add(changeLabel1.getText());
         changes.add(changeLabel2.getText());
@@ -254,8 +252,60 @@ public class MainPageController implements Initializable {
             transferLabel.setVisible(false);
         });
 
+        searchImageView.setOnMouseEntered(e -> {
+            searchImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            searchLabel.setVisible(true);
+        });
+        searchImageView.setOnMouseExited(e -> {
+            searchImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            searchLabel.setVisible(false);
+        });
+
+        blogImageView.setOnMouseEntered(e -> {
+            blogImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 15, 0.5, 0, 0);");
+            blogLabel.setVisible(true);
+        });
+        blogImageView.setOnMouseExited(e -> {
+            blogImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 3, 0.5, 0, 0);");
+            blogLabel.setVisible(false);
+        });
+
         timeLabel.setStyle("-fx-border-color: gold;" +
                 "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 5, 0.5, 0, 0);");
+    }
+
+    public void setProfile() {
+
+        String query = "SELECT profileImage FROM users WHERE username = ?;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, LoginController.getUsername());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    // Get image data
+                    InputStream is = rs.getBinaryStream("profileImage");
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    byte[] byteArray = new byte[1024];
+                    int bytesRead = -1;
+
+                    while ((bytesRead = is.read(byteArray)) != -1) {
+                        buffer.write(byteArray, 0, bytesRead);
+                    }
+
+                    byte[] imageBytes = buffer.toByteArray();
+                    profileImageView.setImage(new Image(new ByteArrayInputStream(imageBytes)));
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "An error occur in retrieve the image profile from table.");
+        }
 
     }
 
@@ -859,5 +909,37 @@ public class MainPageController implements Initializable {
     private void updateDateTime(Label label) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         label.setText(LocalDateTime.now().format(formatter));
+    }
+
+    public void clickOnSearch() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("search/search.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Search");
+
+        stage.setScene(scene);
+
+        stage.show();
+
+    }
+
+    public void clickOnBlog() throws IOException {
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("blog/blog.fxml")));
+
+        scene = new Scene(root);
+
+        stage = (Stage) backBtn.getScene().getWindow();
+
+        stage.setTitle("Search");
+
+        stage.setScene(scene);
+
+        stage.show();
+
     }
 }

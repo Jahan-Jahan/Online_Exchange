@@ -254,6 +254,26 @@
                   <Font name="Sitka Text" size="9.0" />
                </font>
             </Label>
+            <ImageView fx:id="searchImageView" fitHeight="50.0" fitWidth="50.0" layoutX="9.0" layoutY="19.0" onMouseClicked="#clickOnSearch" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../search.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blogImageView" fitHeight="45.0" fitWidth="45.0" layoutX="12.0" layoutY="95.0" onMouseClicked="#clickOnBlog" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../blog.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="searchLabel" alignment="CENTER" layoutX="62.0" layoutY="37.0" prefHeight="14.0" prefWidth="52.0" text="search user" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="9.0" />
+               </font>
+            </Label>
+            <Label fx:id="blogLabel" alignment="CENTER" layoutX="62.0" layoutY="110.0" prefHeight="14.0" prefWidth="32.0" text="blog" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Sitka Text" size="10.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>
