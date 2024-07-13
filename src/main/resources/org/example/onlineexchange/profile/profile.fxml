@@ -83,7 +83,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="addMoneyBtn" layoutX="250.0" layoutY="346.0" mnemonicParsing="false" onAction="#addMoney" prefHeight="40.0" prefWidth="99.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Add money" textFill="WHITE">
+      <Button fx:id="addMoneyBtn" layoutX="250.0" layoutY="346.0" mnemonicParsing="false" onAction="#addMoney" prefHeight="40.0" prefWidth="99.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Withdraw" textFill="WHITE">
          <font>
             <Font name="Verdana" size="14.0" />
          </font>
@@ -116,5 +116,10 @@
             </Lighting>
          </effect>
       </Button>
+      <Label fx:id="changeImageLabel" layoutX="523.0" layoutY="73.0" text="Change image" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Verdana" size="10.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

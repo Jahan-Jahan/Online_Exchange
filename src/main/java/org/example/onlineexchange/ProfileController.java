@@ -16,8 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -34,7 +33,7 @@ public class ProfileController implements Initializable {
     private SignUpController signUpObject = new SignUpController();
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -48,7 +47,7 @@ public class ProfileController implements Initializable {
     private Button backBtn, embezzleBtn;
     @FXML
     private Label usernameLabel, emailLabel, phoneLabel, editLabel1,
-            editLabel2, editLabel3, assetsLabel, exchangeLabel;
+            editLabel2, editLabel3, assetsLabel, exchangeLabel, changeImageLabel;
     @FXML
     private ImageView profileImageView;
     @FXML
@@ -56,6 +55,8 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        setProfile();
 
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new ColorFormatter());
@@ -97,6 +98,15 @@ public class ProfileController implements Initializable {
         });
         assetsLabel.setOnMouseExited(event -> {
             assetsLabel.setStyle("-fx-text-fill: white;");
+        });
+
+        profileImageView.setOnMouseEntered(event -> {
+            profileImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(80,200,120,0.75), 7, 0.5, 0, 0);");
+            changeImageLabel.setVisible(true);
+        });
+        profileImageView.setOnMouseExited(event -> {
+            profileImageView.setStyle("-fx-effect: none;");
+            changeImageLabel.setVisible(false);
         });
 
         if (LoginController.ISADMIN) {
@@ -222,6 +232,42 @@ public class ProfileController implements Initializable {
         LoginController.setUsername(currentUsername);
 
     }
+
+    public void setProfile() {
+
+        String query = "SELECT profileImage FROM users WHERE username = ?;";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, LoginController.getUsername());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    // Get image data
+                    InputStream is = rs.getBinaryStream("profileImage");
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    byte[] byteArray = new byte[1024];
+                    int bytesRead = -1;
+
+                    while ((bytesRead = is.read(byteArray)) != -1) {
+                        buffer.write(byteArray, 0, bytesRead);
+                    }
+
+                    byte[] imageBytes = buffer.toByteArray();
+                    profileImageView.setImage(new Image(new ByteArrayInputStream(imageBytes)));
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occur in reading data from table.");
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "An error occur in retrieve the image profile from table.");
+        }
+
+    }
+
     public void clickOnEdit1() throws SQLException, IOException {
 
         TextInputDialog dialog = new TextInputDialog();
@@ -417,10 +463,50 @@ public class ProfileController implements Initializable {
                 logger.log(Level.SEVERE, "An error occur in execute the update query.");
             }
 
-            String updateQuery5 = "UPDATE history SET username = ? WHERE username = ?";
+            String updateQuery5 = "UPDATE history seller username = ? WHERE seller = ?";
 
             try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                  PreparedStatement pstmt = conn.prepareStatement(updateQuery5)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    logger.log(Level.INFO, "Update query has done successfully.");
+                } else {
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
+                }
+
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+            String updateQuery6 = "UPDATE history buyer username = ? WHERE buyer = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery6)) {
+
+                pstmt.setString(1, newUsername);
+                pstmt.setString(2, username);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    logger.log(Level.INFO, "Update query has done successfully.");
+                } else {
+                    logger.log(Level.SEVERE, "An error occur in execute the update query.");
+                }
+
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "An error occur in execute the update query.");
+            }
+
+            String updateQuery7 = "UPDATE blog SET username = ? WHERE username = ?";
+
+            try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(updateQuery7)) {
 
                 pstmt.setString(1, newUsername);
                 pstmt.setString(2, username);
@@ -452,7 +538,7 @@ public class ProfileController implements Initializable {
         }
 
     }
-    public void changeEmail() throws IOException, SQLException {
+    public void changeEmail() {
 
         if (signUpObject.emailValidation(newEmail)) {
 
@@ -545,43 +631,19 @@ public class ProfileController implements Initializable {
         stage.show();
 
     }
-    public void addMoney(ActionEvent event) {
+    public void addMoney(ActionEvent event) throws IOException {
 
-        TextInputDialog dialog = new TextInputDialog();
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("addMoney/addMoney.fxml")));
 
-        dialog.setTitle("Add money");
-        dialog.setHeaderText("How much money do you want to add?");
-        dialog.setContentText("Enter here:");
+        scene = new Scene(root);
 
-        Optional<String> result = dialog.showAndWait();
+        stage = (Stage) backBtn.getScene().getWindow();
 
-        double moneyToAdd = 0;
+        stage.setTitle("Add-Money");
 
-        if (result.isPresent()) {
+        stage.setScene(scene);
 
-            moneyToAdd = Double.parseDouble(result.get());
-
-        }
-
-        String query = "UPDATE assets SET dollar = ? WHERE username = ?;";
-
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, String.valueOf(dollar + moneyToAdd));
-            pstmt.setString(2, usernameLabel.getText());
-
-            int res = pstmt.executeUpdate();
-
-            if (res > 0) {
-                logger.log(Level.INFO, "Update query has done successfully.");
-            } else {
-                logger.log(Level.SEVERE, "An error occur in execute the update query.");
-            }
-
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "An error occur in execute the update query.");
-        }
+        stage.show();
 
     }
 
@@ -652,7 +714,7 @@ public class ProfileController implements Initializable {
 
     }
 
-    public void clickOnProfile() {
+    public void clickOnProfile() throws FileNotFoundException {
 
         stage = (Stage) backBtn.getScene().getWindow();
 
@@ -664,23 +726,22 @@ public class ProfileController implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(stage);
+        FileInputStream fis = null;
+        Image image;
 
         if (file != null) {
-            Image image = new Image(file.toURI().toString());
+            fis = new FileInputStream(file);
+            image = new Image(file.toURI().toString());
             profileImageView.setImage(image);
         }
 
-        String query = "UPDATE users SET profile = ? WHERE username = ?";
-
-        String profileToSet = "";
-        if (file != null) {
-            profileToSet = file.toURI().toString().substring(6);
-        }
+        String query = "UPDATE users SET profileImage = ? WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, profileToSet);
+            assert file != null;
+            pstmt.setBinaryStream(1, fis, (int) file.length());
             pstmt.setString(2, LoginController.getUsername());
 
             int rowsAffected = pstmt.executeUpdate();
