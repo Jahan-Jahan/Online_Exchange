@@ -66,7 +66,7 @@
                 <Image url="@../dollar_coin.png" />
             </image>
         </ImageView>
-        <TextField fx:id="textField1" layoutX="152.0" layoutY="54.0" prefHeight="26.0" prefWidth="100.0" />
+        <TextField fx:id="textField1" layoutX="152.0" layoutY="54.0" onAction="#onEnter" prefHeight="26.0" prefWidth="100.0" promptText="price" />
       <Label layoutX="87.0" layoutY="14.0" text="You can swap your money here!" textFill="#fffc37">
          <font>
             <Font name="Verdana" size="14.0" />

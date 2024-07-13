@@ -33,7 +33,7 @@ public class SwapController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -133,7 +133,7 @@ public class SwapController implements Initializable {
 
         srcChoiceBox.setItems(items);
 
-        srcChoiceBox.setValue("dollar");
+        srcChoiceBox.setValue(srcExchange);
 
         srcChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -143,7 +143,7 @@ public class SwapController implements Initializable {
 
         desChoiceBox.setItems(items);
 
-        desChoiceBox.setValue("dollar");
+        desChoiceBox.setValue(desExchange);
 
         desChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -377,4 +377,6 @@ public class SwapController implements Initializable {
         textField1.setText("");
 
     }
+
+    public void onEnter(ActionEvent event) throws IOException, SQLException { swap(event); }
 }
