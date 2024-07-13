@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="withdrawPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@withdrawStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.onlineexchange.WithdrawController">
+    <children>
+        <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="66.0" style="-fx-background-color: #50C878; -fx-background-radius: 10;" text="Back" textFill="WHITE">
+            <font>
+                <Font name="Verdana" size="14.0" />
+            </font>
+            <effect>
+                <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+                    <bumpInput>
+                        <Shadow />
+                    </bumpInput>
+                    <light>
+                        <Light.Distant azimuth="270.0" />
+                    </light>
+                </Lighting>
+            </effect>
+        </Button>
+        <Label layoutX="219.0" layoutY="103.0" prefHeight="23.0" text="Withdraw money:" textFill="WHITE">
+            <font>
+                <Font name="Verdana" size="18.0" />
+            </font>
+        </Label>
+        <Button layoutX="247.0" layoutY="309.0" mnemonicParsing="false" onAction="#addMoney" prefHeight="40.0" prefWidth="106.0" style="-fx-background-color: #50C878;" text="Withdraw" textFill="WHITE">
+            <font>
+                <Font name="Verdana" size="15.0" />
+            </font>
+            <effect>
+                <Lighting diffuseConstant="1.31" specularConstant="0.45" specularExponent="39.82" surfaceScale="2.96">
+                    <bumpInput>
+                        <Shadow />
+                    </bumpInput>
+                    <light>
+                        <Light.Distant azimuth="270.0" />
+                    </light>
+                </Lighting>
+            </effect>
+        </Button>
+        <TextField fx:id="priceTextField" layoutX="161.0" layoutY="182.0" onAction="#onEnter" prefHeight="58.0" prefWidth="220.0" promptText="price">
+            <font>
+                <Font name="Verdana" size="16.0" />
+            </font>
+        </TextField>
+        <RadioButton fx:id="dollarRadioBtn" layoutX="399.0" layoutY="141.0" mnemonicParsing="false" text="Dollar" textFill="WHITE">
+            <font>
+                <Font name="MV Boli" size="12.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="tomanRadioBtn" layoutX="399.0" layoutY="170.0" mnemonicParsing="false" text="Toman" textFill="WHITE">
+            <font>
+                <Font name="MV Boli" size="12.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="euroRadioBtn" layoutX="399.0" layoutY="200.0" mnemonicParsing="false" text="Euro" textFill="WHITE">
+            <font>
+                <Font name="MV Boli" size="12.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="yenRadioBtn" layoutX="399.0" layoutY="230.0" mnemonicParsing="false" text="Yen" textFill="WHITE">
+            <font>
+                <Font name="MV Boli" size="12.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="poundRadioBtn" layoutX="399.0" layoutY="260.0" mnemonicParsing="false" text="Pound" textFill="WHITE">
+            <font>
+                <Font name="MV Boli" size="12.0" />
+            </font>
+        </RadioButton>
+    </children>
+</AnchorPane>
