@@ -48,12 +48,20 @@ class ClientHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
     private Socket clientSocket;
 
+    ConsoleHandler consoleHandler;
+
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
     @Override
     public void run() {
+
+        consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new ColorFormatter());
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
+
         try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
@@ -84,6 +92,6 @@ class ClientHandler implements Runnable {
         } else if (input.equalsIgnoreCase("place offer")) {
             return "Offer placed";
         }
-        return "Unknown request";
+        return "Login request";
     }
 }
