@@ -14,8 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -65,8 +64,6 @@ public class LoginController implements Initializable {
         consoleHandler.setFormatter(new ColorFormatter());
         logger.addHandler(consoleHandler);
         logger.setUseParentHandlers(false);
-
-        initializeProfile();
 
         // Animation for welcome label
         TranslateTransition translateTransitionWelcome = new TranslateTransition();
@@ -220,34 +217,6 @@ public class LoginController implements Initializable {
         });
     }
 
-    public void initializeProfile() {
-
-        String query = "SELECT profile FROM users WHERE username = ?";
-
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, inputUsername);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-
-                if (rs.next()) {
-
-                    InputStream imageStream = getClass().getResourceAsStream(rs.getString("profile"));
-
-                    if (imageStream != null) {
-                        profileImage = new Image(imageStream);
-                    }
-                }
-
-            }
-
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "An error occur in reading data from table.");
-        }
-
-    }
-
     public void clickOnSignUpLabel(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp/signUp.fxml")));
@@ -325,12 +294,12 @@ public class LoginController implements Initializable {
 
                     String response = client.sendRequest("User " + inputUsername + " logged in.");
 
-                    System.out.println("Server response: " + response);
+                    logger.log(Level.INFO, "Server response: " + response);
 
                     client.close();
 
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, "An error occur in making the main page ready.");
+                    logger.log(Level.SEVERE, "Server is not ready.");
                 }
             }).start();
 
@@ -350,7 +319,7 @@ public class LoginController implements Initializable {
                     stage.show();
 
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, "An error occur in making the main page ready.");
+                    logger.log(Level.SEVERE, "Server is not ready.");
                 }
             });
 
@@ -515,4 +484,6 @@ public class LoginController implements Initializable {
         }
 
     }
+
+    public void onEnter(ActionEvent event) throws IOException { login(event); }
 }

@@ -83,7 +83,7 @@
             </Lighting>
          </effect>
       </PasswordField>
-      <TextField fx:id="captchaTextField" layoutX="217.0" layoutY="273.0" prefHeight="48.0" prefWidth="121.0" promptText="CAPTCHA">
+      <TextField fx:id="captchaTextField" layoutX="217.0" layoutY="273.0" onAction="#onEnter" prefHeight="48.0" prefWidth="121.0" promptText="CAPTCHA">
          <font>
             <Font name="Sitka Text" size="15.0" />
          </font>

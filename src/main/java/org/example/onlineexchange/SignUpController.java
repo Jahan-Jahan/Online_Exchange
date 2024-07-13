@@ -8,11 +8,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -30,7 +33,7 @@ public class SignUpController implements Initializable {
 
     private final String URL = "jdbc:mysql://localhost:3306/crypto";
     private final String USERNAME = "root";
-    private final String PASSWORD = "Your-Password";
+    private final String PASSWORD = "Abolfazl_84";
 
     private Parent root;
     private Stage stage;
@@ -213,11 +216,17 @@ public class SignUpController implements Initializable {
                 captchaValidation(inputCaptcha)) {
 //            System.out.println("User Signed up successfully!");
 
+            File file = new File("userProfile.png");
+            FileInputStream fis = null;
+            Image image;
+
+            fis = new FileInputStream(file);
+
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
             Statement statement = connection.createStatement();
 
-            String query = "INSERT INTO users (username, firstName, lastName, password, email, phoneNumber, profile)" +
+            String query = "INSERT INTO users (username, firstName, lastName, password, email, phoneNumber, profileImage)" +
                             "VALUES (?, ?, ? ,?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -228,7 +237,7 @@ public class SignUpController implements Initializable {
             preparedStatement.setString(4, inputPassword);
             preparedStatement.setString(5, inputEmail);
             preparedStatement.setString(6, inputPhoneNumber);
-            preparedStatement.setString(7, "C:/Users/pc/Desktop/onlineExchange/src/main/resources/org/example/onlineexchange/userProfile.png");
+            preparedStatement.setBinaryStream(7, fis, (int) file.length());
 
             int addedRows = preparedStatement.executeUpdate();
 
@@ -342,4 +351,6 @@ public class SignUpController implements Initializable {
         }
 
     }
+
+    public void onEnter(ActionEvent event) throws IOException, SQLException { signUp(event); }
 }

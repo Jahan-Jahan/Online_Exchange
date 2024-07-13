@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
@@ -106,7 +105,7 @@
             </Lighting>
          </effect>
       </TextField>
-      <TextField fx:id="captchaTextField" layoutX="290.0" layoutY="322.0" prefHeight="40.0" prefWidth="114.0" promptText="captcha">
+      <TextField fx:id="captchaTextField" layoutX="290.0" layoutY="322.0" onAction="#onEnter" prefHeight="40.0" prefWidth="114.0" promptText="captcha">
          <font>
             <Font name="Sitka Text" size="14.0" />
          </font>
