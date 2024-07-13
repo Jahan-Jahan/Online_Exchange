@@ -231,4 +231,6 @@ public class TransferController implements Initializable {
         usernameTextField.setText("");
         priceTextField.setText("");
     }
+
+    public void onEnter(ActionEvent event) throws IOException, SQLException { transfer(event); }
 }

@@ -52,7 +52,7 @@
             </Lighting>
          </effect>
       </Button>
-      <TextField fx:id="priceTextField" layoutX="131.0" layoutY="228.0" prefHeight="40.0" prefWidth="220.0" promptText="price">
+      <TextField fx:id="priceTextField" layoutX="131.0" layoutY="228.0" onAction="#onEnter" prefHeight="40.0" prefWidth="220.0" promptText="price">
          <font>
             <Font name="Verdana" size="13.0" />
          </font>
