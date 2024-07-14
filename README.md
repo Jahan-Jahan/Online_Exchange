@@ -81,7 +81,7 @@ Once the application is running, you can:
 | password      |  VARCHAR  |           |
 |   email       |  VARCHAR  |      UNIQUE      |
 | phoneNumber   |  VARCHAR  |      UNIQUE      |
-| profileImage  |  VARCHAR  |                  |
+| profileImage  |  LONGBLOB  |                  |
 
 
 ### Assets Table
